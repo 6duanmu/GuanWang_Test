@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会员权益 - Materials Studio 知识解答平台</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #004494;
+            --light-bg: #f8f9fa;
+            --member-color: #ffc107;
+        }
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            color: #333;
+        }
+        .navbar-brand img {
+            max-height: 40px;
+        }
+        .navbar {
+            background-color: var(--primary-color);
+        }
+        .navbar-dark .navbar-nav .nav-link {
+            color: rgba(255,255,255,.8);
+        }
+        .navbar-dark .navbar-nav .nav-link:hover {
+            color: rgba(255,255,255,1);
+        }
+        .member-badge {
+            background-color: var(--member-color);
+            color: #212529;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin-left: 5px;
+        }
+        .hero-section {
+            background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+            color: #212529;
+            padding: 80px 0;
+        }
+        .pricing-card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .pricing-card:hover {
+            transform: translateY(-10px);
+        }
+        .pricing-header {
+            padding: 20px;
+            color: white;
+        }
+        .monthly-plan .pricing-header {
+            background-color: var(--primary-color);
+        }
+        .yearly-plan .pricing-header {
+            background-color: var(--member-color);
+        }
+        .pricing-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        .pricing-price small {
+            font-size: 1rem;
+            font-weight: 400;
+        }
+        .benefit-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: rgba(0, 86, 179, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-right: 20px;
+        }
+        .testimonial-card {
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+        .testimonial-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .faq-item {
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .faq-header {
+            background-color: white;
+            padding: 15px 20px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .faq-body {
+            padding: 15px 20px;
+            background-color: #f8f9fa;
+        }
+        footer {
+            background-color: #343a40;
+            color: white;
+        }
+        .footer-links a {
+            color: rgba(255,255,255,.7);
+            text-decoration: none;
+        }
+        .footer-links a:hover {
+            color: white;
+        }
+        /* 导航栏当前页面指示样式 */
+        .navbar-dark .navbar-nav .nav-link.active {
+            color: rgba(255,255,255,1);
+            background-color: rgba(255,255,255,0.2);
+            font-weight: 600;
+            position: relative;
+        }
+        .navbar-dark .navbar-nav .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 3px;
+            background-color: var(--member-color);
+            border-radius: 3px;
+        }
+        .navbar-dark .navbar-nav .nav-link {
+            color: rgba(255,255,255,.8);
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="https://via.placeholder.com/150x40?text=MS+知识平台" alt="Materials Studio 知识解答平台">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html"><i class="fas fa-home"></i> 首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="qa.html"><i class="fas fa-question-circle"></i> 问答中心</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="resources.html"><i class="fas fa-folder-open"></i> 资源库</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="community.html"><i class="fas fa-users"></i> 社区互动</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="membership.html"><i class="fas fa-crown"></i> 会员权益</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <button class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        <i class="fas fa-sign-in-alt"></i> 登录
+                    </button>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#registerModal">
+                        <i class="fas fa-user-plus"></i> 注册
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 会员介绍 -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">提升您的研究效率</h1>
+                    <p class="lead mb-4">成为会员，解锁更多专业资源和服务，加速您的材料科学研究进程</p>
+                    <a href="#pricing" class="btn btn-dark btn-lg px-4 me-md-2">
+                        <i class="fas fa-crown me-2"></i> 立即加入会员
+                    </a>
+                </div>
+                <div class="col-lg-6">
+                    <img src="https://via.placeholder.com/600x400?text=Materials+Studio+会员特权" class="img-fluid rounded" alt="会员特权">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 会员权益 -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2>会员权益</h2>
+                <p class="lead">专为Materials Studio研究人员打造的专业服务</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="d-flex align-items-start mb-4">
+                        <div class="benefit-icon">
+                            <i class="fas fa-lock-open"></i>
+                        </div>
+                        <div>
+                            <h4>完整解答内容访问权限</h4>
+                            <p>访问所有问题的完整解答内容，包括详细的解析步骤、原理解释和拓展阅读，帮助您全面理解相关知识点。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex align-items-start mb-4">
+                        <div class="benefit-icon">
+                            <i class="fas fa-sliders-h"></i>
+                        </div>
+                        <div>
+                            <h4>高级模拟参数模板</h4>
+                            <p>获取经过优化的高级模拟参数模板，涵盖各类材料体系和计算任务，帮助您快速设置高效的模拟环境。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex align-items-start mb-4">
+                        <div class="benefit-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <div>
+                            <h4>专家一对一咨询服务</h4>
+                            <p>直接向Materials Studio领域专家提问，获取针对您特定研究问题的专业指导和建议。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex align-items-start mb-4">
+                        <div class="benefit-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <h4>模拟结果分析指导</h4>
+                            <p>专业分析师帮助您解读复杂的模拟结果，提供深入的数据解析和可视化建议。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex align-items-start mb-4">
+                        <div class="benefit-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div>
+                            <h4>高级教程与案例研究</h4>
+                            <p>获取详细的高级教程和实际案例研究，学习材料模拟的最佳实践和高级技巧。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex align-items-start mb-4">
+                        <div class="benefit-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div>
+                            <h4>优化脚本工具库</h4>
+                            <p>访问专业开发的Perl、Python脚本库，自动化您的工作流程，提高研究效率。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 会员价格 -->
+    <section id="pricing" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2>会员方案</h2>
+                <p class="lead">选择适合您的会员方案，开始您的专业研究之旅</p>
+            </div>
+            <div class="row justify-content-center g-4">
+                <div class="col-md-4">
+                    <div class="card pricing-card monthly-plan h-100">
+                        <div class="pricing-header text-center">
+                            <h3>月度会员</h3>
+                            <div class="pricing-price">
+                                ¥39.9<small>/月</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled mb-4">
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 完整解答内容访问</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 资源下载权限</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 每月5次专家咨询</li>
+                                <li class="mb-3 text-muted"><i class="fas fa-times text-danger me-2"></i> 高级脚本工具</li>
+                                <li class="mb-3 text-muted"><i class="fas fa-times text-danger me-2"></i> 优先解答服务</li>
+                                <li class="mb-3 text-muted"><i class="fas fa-times text-danger me-2"></i> 结果分析指导</li>
+                            </ul>
+                            <div class="d-grid">
+                                <button class="btn btn-primary">选择此方案</button>
+                            </div>
+                        </div>
+                        <div class="card-footer text-center bg-white">
+                            <small class="text-muted">随时可取消订阅</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card pricing-card yearly-plan h-100">
+                        <div class="pricing-header text-center">
+                            <h3>年度会员</h3>
+                            <span class="badge bg-danger position-absolute top-0 end-0 mt-3 me-3">推荐</span>
+                            <div class="pricing-price">
+                                ¥299<small>/年</small>
+                            </div>
+                            <div class="text-white-50">相当于¥24.9/月，节省37%</div>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled mb-4">
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 完整解答内容访问</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 资源下载权限</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 无限专家咨询</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 高级脚本工具</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 优先解答服务</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 结果分析指导</li>
+                            </ul>
+                            <div class="d-grid">
+                                <button class="btn btn-warning">选择此方案</button>
+                            </div>
+                        </div>
+                        <div class="card-footer text-center bg-white">
+                            <small class="text-muted">包含两个月免费期</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card pricing-card h-100">
+                        <div class="pricing-header text-center bg-dark">
+                            <h3>团队方案</h3>
+                            <div class="pricing-price">
+                                ¥999<small>/年</small>
+                            </div>
+                            <div class="text-white-50">最多5个用户</div>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled mb-4">
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 所有年度会员权益</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 团队共享资源库</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 定制化培训服务</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 专属客户经理</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 优先技术支持</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 团队协作工具</li>
+                            </ul>
+                            <div class="d-grid">
+                                <button class="btn btn-outline-dark">联系我们</button>
+                            </div>
+                        </div>
+                        <div class="card-footer text-center bg-white">
+                            <small class="text-muted">可定制更多用户数量</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 用户评价 -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2>会员评价</h2>
+                <p class="lead">听听其他研究人员的使用体验</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="testimonial-card p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="https://via.placeholder.com/80?text=张" class="testimonial-img me-3" alt="用户头像">
+                            <div>
+                                <h5 class="mb-0">张教授</h5>
+                                <p class="text-muted mb-0">材料科学系主任，某985高校</p>
+                            </div>
+                        </div>
+                        <p class="mb-2">成为会员后，我们实验室的研究效率显著提高。专家咨询服务帮助我们解决了多个复杂的建模问题，节省了大量时间。</p>
+                        <div class="text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <div class="testimonial-card p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="https://via.placeholder.com/80?text=李" class="testimonial-img me-3" alt="用户头像">
+                            <div>
+                                <h5 class="mb-0">李博士</h5>
+                                <p class="text-muted mb-0">材料研究所，研究员</p>
+                            </div>
+                        </div>
+                        <p class="mb-2">会员提供的高级参数模板为我节省了大量调试时间。平台上的专家解答非常专业，帮助我解决了CASTEP计算中的许多难题。</p>
+                        <div class="text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <div class="testimonial-card p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="https://via.placeholder.com/80?text=王" class="testimonial-img me-3" alt="用户头像">
+                            <div>
+                                <h5 class="mb-0">王同学</h5>
+                                <p class="text-muted mb-0">博士研究生，材料科学与工程</p>
+                            </div>
+                        </div>
+                        <p class="mb-2">作为初学者，会员资源对我的学习帮助很大。高级教程和案例研究让我能够快速上手Materials Studio，专家解答也很及时。</p>
+                        <div class="text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 常见问题 -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2>常见问题</h2>
+                <p class="lead">关于会员服务的常见疑问解答</p>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="accordion" id="faqAccordion">
+                        <div class="faq-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    会员可以使用哪些专属服务？
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    会员可以访问完整的问题解答内容、高级模拟参数模板、专家一对一咨询服务、模拟结果分析指导、高级教程与案例研究，以及优化脚本工具库。不同会员方案包含的具体服务内容可能有所不同，详情请参见会员方案对比。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    如何使用专家咨询服务？
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    成为会员后，您可以在问答中心页面看到"专家咨询"按钮。点击后，您可以提交您的问题和相关材料，我们会安排相关领域的专家在24小时内与您联系，提供一对一的咨询服务。月度会员每月有5次咨询机会，年度会员则不限次数。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    会员资格可以退订吗？
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    是的，月度会员可以随时取消订阅，取消后当前计费周期结束时会员资格将自动终止。年度会员在购买后14天内可申请全额退款（如未使用任何会员服务），超过14天或已使用服务的情况下将按比例退还剩余时间的费用。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <h2 class="accordion-header" id="headingFour">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                    团队方案如何申请？
+                                </button>
+                            </h2>
+                            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    团队方案需通过联系客服申请。我们会根据您的团队规模和具体需求提供定制化的服务方案和报价。标准团队方案支持最多5个用户，如需更多用户数量，我们可以根据实际情况调整。团队方案还包含额外的团队协作工具和定制化培训服务。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <h2 class="accordion-header" id="headingFive">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                    支持哪些支付方式？
+                                </button>
+                            </h2>
+                            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    我们支持支付宝、微信支付、银联卡以及主流国际信用卡（Visa、MasterCard等）。对于团队方案和机构用户，我们还支持对公转账和开具发票。如有特殊支付需求，请联系客服咨询。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 行动呼吁 -->
+    <section class="py-5 bg-primary text-white text-center">
+        <div class="container">
+            <h2 class="mb-4">立即加入会员，提升您的研究效率</h2>
+            <p class="lead mb-4">超过1000+研究人员已经加入，成为会员的平均投资回报率超过10倍</p>
+            <button class="btn btn-warning btn-lg px-5">
+                <i class="fas fa-crown me-2"></i> 现在开始
+            </button>
+        </div>
+    </section>
+
+    <!-- 登录模态框 -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">用户登录</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">邮箱地址</label>
+                            <input type="email" class="form-control" id="loginEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">密码</label>
+                            <input type="password" class="form-control" id="loginPassword" required>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">记住我</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">登录</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <a href="#" class="text-decoration-none">忘记密码?</a>
+                        <span class="mx-2">|</span>
+                        <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#registerModal" data-bs-dismiss="modal">注册新账号</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 注册模态框 -->
+    <div class="modal fade" id="registerModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">用户注册</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="registerName" class="form-label">用户名</label>
+                            <input type="text" class="form-control" id="registerName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerEmail" class="form-label">邮箱地址</label>
+                            <input type="email" class="form-control" id="registerEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerPassword" class="form-label">密码</label>
+                            <input type="password" class="form-control" id="registerPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">确认密码</label>
+                            <input type="password" class="form-control" id="confirmPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="userType" class="form-label">您的身份</label>
+                            <select class="form-select" id="userType">
+                                <option selected>请选择</option>
+                                <option value="researcher">研究人员</option>
+                                <option value="student">学生</option>
+                                <option value="engineer">工程师</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                            <label class="form-check-label" for="agreeTerms">我同意<a href="#">服务条款</a>和<a href="#">隐私政策</a></label>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">注册</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <span>已有账号?</span>
+                        <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">立即登录</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5>Materials Studio 知识解答平台</h5>
+                    <p>专注于解答 Materials Studio 软件用户问题的在线服务网站。</p>
+                    <div class="social-links">
+                        <a href="#" class="me-2"><i class="fab fa-weixin fa-lg"></i></a>
+                        <a href="#" class="me-2"><i class="fab fa-weibo fa-lg"></i></a>
+                        <a href="#" class="me-2"><i class="fab fa-github fa-lg"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 mb-4 mb-lg-0">
+                    <h5>平台</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="qa.html">问答中心</a></li>
+                        <li><a href="resources.html">资源库</a></li>
+                        <li><a href="community.html">社区互动</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 mb-4 mb-lg-0">
+                    <h5>支持</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="#">常见问题</a></li>
+                        <li><a href="#">使用指南</a></li>
+                        <li><a href="#">联系我们</a></li>
+                        <li><a href="#">问题反馈</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h5>联系我们</h5>
+                    <p><i class="fas fa-envelope me-2"></i> contact@msstudio-platform.com</p>
+                    <p><i class="fas fa-comments me-2"></i> 微信群：MS-Knowledge-Group</p>
+                    <form class="mt-3">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="订阅我们的最新资讯">
+                            <button class="btn btn-primary" type="button">订阅</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <hr class="my-4 bg-light">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">© 2023 Materials Studio 知识解答平台 | 版权所有</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item"><a href="#">隐私政策</a></li>
+                        <li class="list-inline-item"><a href="#">服务条款</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 添加到现有的页面加载事件中或创建新的DOMContentLoaded事件
+        document.addEventListener('DOMContentLoaded', function() {
+            // 设置当前页面导航高亮
+            setActiveNavItem();
+            
+            // 其他已有的初始化代码...
+        });
+        
+        // 设置当前页面导航高亮
+        function setActiveNavItem() {
+            // 获取当前页面URL
+            const currentPage = window.location.pathname.split('/').pop();
+            
+            // 移除所有导航链接的active类
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // 设置当前页面对应的导航链接为active
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+                    link.classList.add('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html> 

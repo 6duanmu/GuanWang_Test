@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>专业术语词典 - Materials Studio 知识解答平台</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #004494;
+            --accent-color: #00a0e9;
+            --light-bg: #f8f9fa;
+            --dark-bg: #343a40;
+            --border-radius: 8px;
+            --box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            --transition-speed: 0.3s;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            color: #333;
+            background-color: var(--light-bg);
+        }
+        
+        .navbar {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .term-card {
+            border: none;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: all var(--transition-speed);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .term-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .term-header {
+            background-color: rgba(0,86,179,0.05);
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(0,86,179,0.1);
+        }
+        
+        .term-title {
+            font-weight: 600;
+            margin-bottom: 0;
+            color: var(--primary-color);
+        }
+        
+        .category-badge {
+            font-size: 0.75rem;
+            padding: 3px 10px;
+            border-radius: 12px;
+            margin-left: 10px;
+        }
+        
+        .category-software {
+            background-color: rgba(13, 110, 253, 0.1);
+            color: #0d6efd;
+        }
+        
+        .category-concept {
+            background-color: rgba(32, 201, 151, 0.1);
+            color: #20c997;
+        }
+        
+        .category-method {
+            background-color: rgba(253, 126, 20, 0.1);
+            color: #fd7e14;
+        }
+        
+        .category-theory {
+            background-color: rgba(111, 66, 193, 0.1);
+            color: #6f42c1;
+        }
+        
+        .related-term {
+            display: inline-block;
+            background-color: rgba(0,0,0,0.05);
+            color: #495057;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            transition: all var(--transition-speed);
+        }
+        
+        .related-term:hover {
+            background-color: rgba(0,86,179,0.1);
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+        
+        .search-box {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .search-input {
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 12px 20px;
+            box-shadow: var(--box-shadow);
+            transition: all var(--transition-speed);
+        }
+        
+        .search-input:focus {
+            box-shadow: 0 5px 20px rgba(0,86,179,0.2);
+            transform: translateY(-2px);
+        }
+        
+        .search-button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+        }
+        
+        .search-button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .filter-button {
+            background-color: white;
+            border: 1px solid #dee2e6;
+            border-radius: 20px;
+            padding: 6px 15px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            transition: all var(--transition-speed);
+            cursor: pointer;
+        }
+        
+        .filter-button:hover, .filter-button.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .term-index {
+            background-color: #fff;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 15px;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .term-index ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 0;
+        }
+        
+        .term-index li {
+            margin-bottom: 8px;
+        }
+        
+        .term-index a {
+            color: #495057;
+            text-decoration: none;
+            transition: all var(--transition-speed);
+            display: block;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        .term-index a:hover, .term-index a.active {
+            color: var(--primary-color);
+            background-color: rgba(0,86,179,0.05);
+        }
+        
+        .alphabet-nav {
+            position: sticky;
+            top: 20px;
+            background-color: #fff;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .alphabet-nav a {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            margin: 2px;
+            border-radius: 4px;
+            color: #495057;
+            text-decoration: none;
+            transition: all var(--transition-speed);
+        }
+        
+        .alphabet-nav a:hover, .alphabet-nav a.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* 导航栏当前页面指示样式 */
+        .navbar-dark .navbar-nav .nav-link.active {
+            color: rgba(255,255,255,1);
+            background-color: rgba(255,255,255,0.2);
+            font-weight: 600;
+            position: relative;
+        }
+        
+        .navbar-dark .navbar-nav .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 3px;
+            background-color: var(--member-color);
+            border-radius: 3px;
+        }
+        
+        .navbar-dark .navbar-nav .nav-link {
+            color: rgba(255,255,255,.8);
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="https://via.placeholder.com/150x40?text=MS+知识平台" alt="Materials Studio 知识解答平台">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html"><i class="fas fa-home"></i> 首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="qa.html"><i class="fas fa-question-circle"></i> 问答中心</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="resources.html"><i class="fas fa-file-alt"></i> 资源库</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="community.html"><i class="fas fa-users"></i> 社区</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="membership.html"><i class="fas fa-crown"></i> 会员</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a href="#" class="btn btn-outline-light me-2"><i class="fas fa-user"></i> 登录</a>
+                    <a href="#" class="btn btn-light"><i class="fas fa-user-plus"></i> 注册</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main class="container my-5">
+        <div class="row">
+            <div class="col-12 mb-4">
+                <h2 class="text-center mb-3">Materials Studio 专业术语词典</h2>
+                <p class="text-center text-muted mb-4">收录Materials Studio软件及材料模拟相关专业术语的详细解释与应用说明</p>
+                
+                <!-- 搜索框 -->
+                <div class="search-box mb-4">
+                    <input type="text" class="form-control search-input" id="termSearchInput" placeholder="搜索专业术语..." aria-label="搜索专业术语">
+                    <button class="search-button" id="termSearchButton">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                
+                <!-- 字母导航 -->
+                <div class="alphabet-nav text-center">
+                    <a href="#section-A" class="active">A</a>
+                    <a href="#section-B">B</a>
+                    <a href="#section-C">C</a>
+                    <a href="#section-D">D</a>
+                    <a href="#section-E">E</a>
+                    <a href="#section-F">F</a>
+                    <a href="#section-G">G</a>
+                    <a href="#section-H">H</a>
+                    <a href="#section-I">I</a>
+                    <a href="#section-J">J</a>
+                    <a href="#section-K">K</a>
+                    <a href="#section-L">L</a>
+                    <a href="#section-M">M</a>
+                    <a href="#section-N">N</a>
+                    <a href="#section-O">O</a>
+                    <a href="#section-P">P</a>
+                    <a href="#section-Q">Q</a>
+                    <a href="#section-R">R</a>
+                    <a href="#section-S">S</a>
+                    <a href="#section-T">T</a>
+                    <a href="#section-U">U</a>
+                    <a href="#section-V">V</a>
+                    <a href="#section-W">W</a>
+                    <a href="#section-X">X</a>
+                    <a href="#section-Y">Y</a>
+                    <a href="#section-Z">Z</a>
+                    <a href="#section-Other">其他</a>
+                </div>
+                
+                <!-- 筛选器 -->
+                <div class="d-flex flex-wrap mb-4 mt-3">
+                    <button class="filter-button active" data-filter="all">全部分类</button>
+                    <button class="filter-button" data-filter="software">软件模块</button>
+                    <button class="filter-button" data-filter="concept">基本概念</button>
+                    <button class="filter-button" data-filter="method">方法技术</button>
+                    <button class="filter-button" data-filter="theory">理论基础</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <!-- 侧边栏索引 -->
+            <div class="col-lg-3 d-none d-lg-block">
+                <div class="term-index">
+                    <h5 class="mb-3">快速导航</h5>
+                    <ul>
+                        <li><a href="#section-A" class="active">A 开头的术语</a></li>
+                        <li><a href="#section-C">C 开头的术语</a></li>
+                        <li><a href="#section-D">D 开头的术语</a></li>
+                        <li><a href="#section-F">F 开头的术语</a></li>
+                        <li><a href="#section-G">G 开头的术语</a></li>
+                        <li><a href="#section-L">L 开头的术语</a></li>
+                        <li><a href="#section-M">M 开头的术语</a></li>
+                        <li><a href="#section-N">N 开头的术语</a></li>
+                        <li><a href="#section-P">P 开头的术语</a></li>
+                        <li><a href="#section-Q">Q 开头的术语</a></li>
+                        <li><a href="#section-Other">其他术语</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 术语内容 -->
+            <div class="col-lg-9">
+                <!-- A 字母开头的术语 -->
+                <div id="section-A" class="mb-5">
+                    <h3 class="mb-4">A</h3>
+                    
+                    <div class="term-card" data-category="theory">
+                        <div class="term-header d-flex align-items-center">
+                            <h4 class="term-title">ab initio</h4>
+                            <span class="category-badge category-theory">理论基础</span>
+                        </div>
+                        <div class="card-body">
+                            <p>从头算或从第一性原理出发的计算方法，是指基于量子力学基本原理进行的计算，不依赖于经验参数。这类方法包括Hartree-Fock方法、密度泛函理论等。</p>
+                            <p>在Materials Studio中，CASTEP和DMol3模块采用的是从头算方法。</p>
+                            <h6 class="mt-3 mb-2">相关术语：</h6>
+                            <div>
+                                <span class="related-term">第一性原理</span>
+                                <span class="related-term">量子力学</span>
+                                <span class="related-term">DFT</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- C 字母开头的术语 -->
+                <div id="section-C" class="mb-5">
+                    <h3 class="mb-4">C</h3>
+                    
+                    <div class="term-card" data-category="software">
+                        <div class="term-header d-flex align-items-center">
+                            <h4 class="term-title">CASTEP</h4>
+                            <span class="category-badge category-software">软件模块</span>
+                        </div>
+                        <div class="card-body">
+                            <p>CASTEP是Materials Studio中的一款基于密度泛函理论(DFT)的第一性原理量子力学程序，用于计算材料性质。它使用平面波基组和赝势方法求解Kohn-Sham方程，广泛应用于固体、表面、分子等系统的模拟。</p>
+                            <p>CASTEP可以计算的性质包括：能量、力和应力、优化几何构型、分子动力学、过渡态搜索、振动性质、电子能带结构、总态和分波态密度、光学性质、NMR、弹性常数等。</p>
+                            <h6 class="mt-3 mb-2">相关术语：</h6>
+                            <div>
+                                <span class="related-term">DFT</span>
+                                <span class="related-term">第一性原理</span>
+                                <span class="related-term">赝势</span>
+                                <span class="related-term">平面波基组</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="term-card" data-category="concept">
+                        <div class="term-header d-flex align-items-center">
+                            <h4 class="term-title">COMPASS</h4>
+                            <span class="category-badge category-concept">基本概念</span>
+                        </div>
+                        <div class="card-body">
+                            <p>COMPASS (Condensed-phase Optimized Molecular Potentials for Atomistic Simulation Studies) 是一种全原子力场，专为模拟凝聚相材料而设计。它是第一个通过ab initio和经验参数化方法结合而得到的能够准确预测气相和凝聚相性质的力场。</p>
+                            <p>在Materials Studio的Forcite和Discover模块中被广泛使用，适用于有机分子、小分子无机物、聚合物和生物大分子的模拟。</p>
+                            <h6 class="mt-3 mb-2">相关术语：</h6>
+                            <div>
+                                <span class="related-term">力场</span>
+                                <span class="related-term">分子力学</span>
+                                <span class="related-term">Forcite</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- D 字母开头的术语 -->
+                <div id="section-D" class="mb-5">
+                    <h3 class="mb-4">D</h3>
+                    
+                    <div class="term-card" data-category="software">
+                        <div class="term-header d-flex align-items-center">
+                            <h4 class="term-title">DMol3</h4>
+                            <span class="category-badge category-software">软件模块</span>
+                        </div>
+                        <div class="card-body">
+                            <p>DMol3是Materials Studio中的一个量子力学模块，基于密度泛函理论(DFT)，用于模拟分子和周期性系统的电子结构和性质。它使用数值原子轨道基组，适合计算分子、表面和固体的结构、能量和电子性质。</p>
+                            <p>与CASTEP相比，DMol3在计算某些分子体系（特别是过渡金属化合物）时具有特殊优势，并且支持全电子计算和相对论效应。</p>
+                            <h6 class="mt-3 mb-2">相关术语：</h6>
+                            <div>
+                                <span class="related-term">DFT</span>
+                                <span class="related-term">原子轨道</span>
+                                <span class="related-term">电子结构</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="term-card" data-category="theory">
+                        <div class="term-header d-flex align-items-center">
+                            <h4 class="term-title">DFT</h4>
+                            <span class="category-badge category-theory">理论基础</span>
+                        </div>
+                        <div class="card-body">
+                            <p>密度泛函理论(Density Functional Theory)的缩写，是一种基于电子密度的量子力学计算方法，广泛用于材料科学中的电子结构计算。</p>
+                            <p>DFT的基本原理是使用电子密度而非多电子波函数来表述多电子系统的基态性质，从而大大简化了计算复杂度。在Materials Studio中，CASTEP、DMol3和ONETEP等模块都是基于DFT的计算方法。</p>
+                            <h6 class="mt-3 mb-2">相关术语：</h6>
+                            <div>
+                                <span class="related-term">密度泛函理论</span>
+                                <span class="related-term">PBE</span>
+                                <span class="related-term">B3LYP</span>
+                                <span class="related-term">交换关联泛函</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 更多术语部分会按照同样格式继续 -->
+                <!-- ... -->
+                
+                <!-- 其他术语 -->
+                <div id="section-Other" class="mb-5">
+                    <h3 class="mb-4">其他</h3>
+                    
+                    <div class="term-card" data-category="concept">
+                        <div class="term-header d-flex align-items-center">
+                            <h4 class="term-title">过渡态</h4>
+                            <span class="category-badge category-concept">基本概念</span>
+                        </div>
+                        <div class="card-body">
+                            <p>过渡态是化学反应路径上的高能中间状态，代表反应物转化为产物过程中的能量最高点。在计算化学中，过渡态的确定对理解反应机理和反应速率至关重要。</p>
+                            <p>在Materials Studio中，可以使用CASTEP和DMol3模块中的LST/QST方法和NEB方法来寻找过渡态结构。</p>
+                            <h6 class="mt-3 mb-2">相关术语：</h6>
+                            <div>
+                                <span class="related-term">活化能</span>
+                                <span class="related-term">反应机理</span>
+                                <span class="related-term">能量鞍点</span>
+                                <span class="related-term">LST/QST</span>
+                                <span class="related-term">NEB</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="term-card" data-category="concept">
+                        <div class="term-header d-flex align-items-center">
+                            <h4 class="term-title">力场</h4>
+                            <span class="category-badge category-concept">基本概念</span>
+                        </div>
+                        <div class="card-body">
+                            <p>力场是分子模拟中描述原子间相互作用的数学函数和参数集合。常见的力场包括COMPASS、PCFF、Dreiding等，用于计算分子的能量和结构。</p>
+                            <p>在Materials Studio中，Forcite模块支持多种力场，用于进行分子力学和分子动力学模拟。不同的力场适用于不同类型的分子体系，选择合适的力场对于模拟结果的准确性至关重要。</p>
+                            <h6 class="mt-3 mb-2">相关术语：</h6>
+                            <div>
+                                <span class="related-term">分子力学</span>
+                                <span class="related-term">COMPASS</span>
+                                <span class="related-term">PCFF</span>
+                                <span class="related-term">Dreiding</span>
+                                <span class="related-term">Universal</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 底部版权信息 -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2023 Materials Studio 知识解答平台. 保留所有权利.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-white-50 text-decoration-none me-3">隐私政策</a>
+                    <a href="#" class="text-white-50 text-decoration-none me-3">使用条款</a>
+                    <a href="#" class="text-white-50 text-decoration-none">联系我们</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Context7 服务 -->
+    <script src="js/context7-service.js"></script>
+    
+    <!-- 自定义脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const termSearchInput = document.getElementById('termSearchInput');
+            const termSearchButton = document.getElementById('termSearchButton');
+            const filterButtons = document.querySelectorAll('.filter-button');
+            const termCards = document.querySelectorAll('.term-card');
+            const alphabetLinks = document.querySelectorAll('.alphabet-nav a');
+            const sidebarLinks = document.querySelectorAll('.term-index a');
+            
+            // 等待Context7服务就绪
+            document.addEventListener('context7:ready', function() {
+                console.log('Context7服务已就绪，可以使用术语库功能');
+                
+                // 这里可以添加使用Context7加载更多术语的功能
+            });
+            
+            // 字母导航点击事件
+            alphabetLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 移除所有活跃状态
+                    alphabetLinks.forEach(l => l.classList.remove('active'));
+                    sidebarLinks.forEach(l => l.classList.remove('active'));
+                    
+                    // 为当前链接添加活跃状态
+                    this.classList.add('active');
+                    
+                    // 同步侧边栏的活跃状态
+                    const targetId = this.getAttribute('href');
+                    const sidebarLink = document.querySelector(`.term-index a[href="${targetId}"]`);
+                    if (sidebarLink) {
+                        sidebarLink.classList.add('active');
+                    }
+                    
+                    // 滚动到对应部分
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // 侧边栏导航点击事件
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 移除所有活跃状态
+                    sidebarLinks.forEach(l => l.classList.remove('active'));
+                    alphabetLinks.forEach(l => l.classList.remove('active'));
+                    
+                    // 为当前链接添加活跃状态
+                    this.classList.add('active');
+                    
+                    // 同步字母导航的活跃状态
+                    const targetId = this.getAttribute('href');
+                    const alphabetLink = document.querySelector(`.alphabet-nav a[href="${targetId}"]`);
+                    if (alphabetLink) {
+                        alphabetLink.classList.add('active');
+                    }
+                    
+                    // 滚动到对应部分
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // 分类筛选点击事件
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 移除所有活跃状态
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // 为当前按钮添加活跃状态
+                    this.classList.add('active');
+                    
+                    // 筛选术语卡片
+                    const filter = this.getAttribute('data-filter');
+                    
+                    termCards.forEach(card => {
+                        if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                    
+                    // 如果筛选后某个字母部分没有术语，隐藏该部分的标题
+                    const sections = document.querySelectorAll('[id^="section-"]');
+                    sections.forEach(section => {
+                        const visibleCards = section.querySelectorAll('.term-card[style="display: block"]');
+                        if (visibleCards.length === 0) {
+                            section.style.display = 'none';
+                        } else {
+                            section.style.display = 'block';
+                        }
+                    });
+                });
+            });
+            
+            // 搜索功能
+            termSearchButton.addEventListener('click', searchTerms);
+            termSearchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchTerms();
+                }
+            });
+            
+            // 搜索术语
+            function searchTerms() {
+                const query = termSearchInput.value.trim().toLowerCase();
+                if (query === '') {
+                    // 如果搜索框为空，显示所有术语
+                    termCards.forEach(card => {
+                        card.style.display = 'block';
+                    });
+                    
+                    document.querySelectorAll('[id^="section-"]').forEach(section => {
+                        section.style.display = 'block';
+                    });
+                    
+                    // 重置筛选按钮
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    filterButtons[0].classList.add('active');
+                    
+                    return;
+                }
+                
+                // 隐藏所有术语卡片，然后只显示匹配的
+                termCards.forEach(card => {
+                    const termTitle = card.querySelector('.term-title').textContent.toLowerCase();
+                    const termContent = card.querySelector('.card-body').textContent.toLowerCase();
+                    
+                    if (termTitle.includes(query) || termContent.includes(query)) {
+                        card.style.display = 'block';
+                        
+                        // 高亮匹配文本（实际应用中可能需要更复杂的逻辑）
+                        // ...
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // 隐藏没有匹配结果的字母部分
+                document.querySelectorAll('[id^="section-"]').forEach(section => {
+                    const visibleCards = section.querySelectorAll('.term-card[style="display: block"]');
+                    if (visibleCards.length === 0) {
+                        section.style.display = 'none';
+                    } else {
+                        section.style.display = 'block';
+                    }
+                });
+                
+                // 重置筛选按钮
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                filterButtons[0].classList.add('active');
+            }
+            
+            // 相关术语点击事件
+            document.querySelectorAll('.related-term').forEach(term => {
+                term.addEventListener('click', function() {
+                    const termText = this.textContent.trim();
+                    termSearchInput.value = termText;
+                    searchTerms();
+                });
+            });
+            
+            // 设置当前页面导航高亮
+            setActiveNavItem();
+        });
+        
+        // 设置当前页面导航高亮
+        function setActiveNavItem() {
+            // 获取当前页面URL
+            const currentPage = window.location.pathname.split('/').pop();
+            
+            // 移除所有导航链接的active类
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // 设置当前页面对应的导航链接为active
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+                    link.classList.add('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html> 

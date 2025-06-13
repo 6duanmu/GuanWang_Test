@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!-- 页面元数据设置 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>社区互动 - Materials Studio 知识解答平台</title>
+    <!-- 引入Bootstrap框架CSS，用于响应式布局和组件样式 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 引入Font Awesome图标库，用于页面各处图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 引入动画和可视化库 -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        /* ===== 全局样式设置 ===== */
+        
+        /* 全局变量定义，用于统一网站颜色风格 */
+        :root {
+            --primary-color: #0056b3;    /* 主题色，用于导航栏、按钮等 */
+            --secondary-color: #004494;  /* 次要色，用于强调和悬停效果 */
+            --light-bg: #f8f9fa;         /* 浅色背景，用于分隔区域 */
+            --member-color: #ffc107;     /* 会员标识色，用于会员相关元素 */
+        }
+        
+        /* 基础页面样式 */
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;  /* 优先使用微软雅黑字体，适合中文显示 */
+            color: #333;                                        /* 默认文字颜色 */
+        }
+        
+        /* ===== 导航栏样式 ===== */
+        
+        /* 导航栏Logo图片大小控制 */
+        .navbar-brand img {
+            max-height: 40px;  /* 控制导航栏logo大小 */
+        }
+        
+        /* 导航栏背景颜色 */
+        .navbar {
+            background-color: var(--primary-color);  /* 使用主题色作为导航栏背景 */
+        }
+        
+        /* 导航链接默认状态样式 */
+        .navbar-dark .navbar-nav .nav-link {
+            color: rgba(255,255,255,.8);  /* 导航链接默认状态颜色，半透明白色 */
+        }
+        
+        /* 导航链接悬停状态样式 */
+        .navbar-dark .navbar-nav .nav-link:hover {
+            color: rgba(255,255,255,1);   /* 导航链接悬停状态颜色，全不透明白色 */
+        }
+        
+        /* 导航栏当前页面指示样式 */
+        .navbar-dark .navbar-nav .nav-link.active {
+            color: rgba(255,255,255,1);
+            background-color: rgba(255,255,255,0.2);
+            font-weight: 600;
+            position: relative;
+        }
+        
+        .navbar-dark .navbar-nav .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 3px;
+            background-color: var(--member-color);
+            border-radius: 3px;
+        }
+        
+        .navbar-dark .navbar-nav .nav-link {
+            color: rgba(255,255,255,.8);
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        /* ===== 会员标识样式 ===== */
+        
+        /* 会员徽章样式 - 用于标识会员专享内容 */
+        .member-badge {
+            background-color: var(--member-color);  /* 会员徽章使用会员标识色（黄色） */
+            color: #212529;                         /* 徽章文字颜色，深色确保可读性 */
+            padding: 2px 8px;                       /* 内边距控制徽章大小 */
+            border-radius: 12px;                    /* 圆角效果 */
+            font-size: 0.75rem;                     /* 较小的字体大小 */
+            margin-left: 5px;                       /* 左侧外边距，与其他元素保持间距 */
+        }
+        
+        /* ===== 页面头部样式 ===== */
+        
+        /* 增强版页面头部样式 */
+        .page-header {
+            background: linear-gradient(135deg, #0056b3 0%, #3498db 100%);
+            color: white;
+            padding: 50px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1628595351029-c2bf17511435?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bW9sZWN1bGV8ZW58MHx8MHx8&auto=format&fit=crop&w=1200&q=60') center/cover no-repeat;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .page-header .container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* ===== 卡片和容器样式 ===== */
+        
+        /* 增强社区卡片效果 */
+        .community-card {
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            margin-bottom: 25px;
+            border: none;
+            overflow: hidden;
+        }
+        
+        .community-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+        }
+        
+        /* ===== 话题和标签样式 ===== */
+        
+        /* 话题标签增强样式 */
+        .topic-tag {
+            font-size: 0.75rem;
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-right: 8px;
+            transition: all 0.3s;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .topic-tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        /* 话题列表项样式 - 每个讨论话题的容器 */
+        .topic-list-item {
+            border-bottom: 1px solid #eee;  /* 每个话题之间添加浅色分隔线 */
+            padding: 15px 0;               /* 上下内边距 */
+        }
+        
+        /* 最后一个话题项移除底部边框 */
+        .topic-list-item:last-child {
+            border-bottom: none;  /* 最后一个话题移除底部分隔线，避免重复边框 */
+        }
+        
+        /* 活动时间线增强样式 */
+        .activity-item {
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 25px;
+            transition: all 0.3s;
+        }
+        
+        .activity-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .activity-item:before {
+            content: '';
+            position: absolute;
+            left: 19px;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: linear-gradient(to bottom, #0056b3, rgba(0,86,179,0.3));
+        }
+        
+        .activity-item .activity-dot {
+            position: absolute;
+            left: 14px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #0056b3, #3498db);
+            box-shadow: 0 0 0 4px rgba(0,86,179,0.2);
+        }
+        
+        /* ===== 活动卡片样式 ===== */
+        
+        /* 交互式事件卡片 */
+        .event-card {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .event-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+        }
+        
+        .event-date {
+            background: linear-gradient(135deg, #0056b3, #3498db);
+            color: white;
+            text-align: center;
+            padding: 15px 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .event-date:after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            transform: rotate(45deg);
+        }
+        
+        .event-day {
+            font-size: 1.8rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+        
+        /* ===== 用户头像样式 ===== */
+        
+        /* 用户头像增强效果 */
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            transition: all 0.3s;
+        }
+        
+        .user-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+        }
+        
+        /* 大尺寸用户头像，用于需要更突出显示的场景 */
+        .user-avatar-lg {
+            width: 60px;
+            height: 60px;
+        }
+        
+        /* ===== 社区动态和时间线样式 ===== */
+        
+        /* 数据可视化区域 */
+        .stats-visualization {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        /* 互动按钮增强 */
+        .btn {
+            border-radius: 25px;
+            padding: 8px 20px;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.2), rgba(255,255,255,0));
+            transition: all 0.5s;
+        }
+        
+        .btn:hover:after {
+            left: 100%;
+        }
+        
+        /* 搜索框增强 */
+        .search-input {
+            border-radius: 25px;
+            padding: 12px 20px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .search-input:focus {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+        
+        .search-btn {
+            border-radius: 0 25px 25px 0;
+            padding: 12px 25px;
+        }
+        
+        /* ===== 页脚样式 ===== */
+        
+        /* 页脚区域样式 */
+        footer {
+            background-color: #343a40;  /* 深色背景 */
+            color: white;               /* 白色文字 */
+        }
+        
+        /* 页脚链接样式 */
+        .footer-links a {
+            color: rgba(255,255,255,.7);  /* 半透明白色，区别于普通文字 */
+            text-decoration: none;         /* 移除下划线 */
+        }
+        
+        /* 页脚链接悬停效果 */
+        .footer-links a:hover {
+            color: white;  /* 悬停时变为全白色，增强可见度 */
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏部分 - 网站的全局导航区域 -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <!-- 网站Logo和首页链接 -->
+            <a class="navbar-brand" href="index.html">
+                <img src="https://via.placeholder.com/150x40?text=MS+知识平台" alt="Materials Studio 知识解答平台">
+            </a>
+            <!-- 移动端折叠按钮 -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- 导航菜单内容 -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- 主导航链接 -->
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html"><i class="fas fa-home"></i> 首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="qa.html"><i class="fas fa-question-circle"></i> 问答中心</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="resources.html"><i class="fas fa-folder-open"></i> 资源库</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="community.html"><i class="fas fa-users"></i> 社区互动</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="membership.html"><i class="fas fa-crown"></i> 会员权益</a>
+                    </li>
+                </ul>
+                <!-- 用户操作按钮 -->
+                <div class="d-flex">
+                    <button class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        <i class="fas fa-sign-in-alt"></i> 登录
+                    </button>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#registerModal">
+                        <i class="fas fa-user-plus"></i> 注册
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面标题区域 - 添加动画效果 -->
+    <header class="page-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right" data-aos-duration="800">
+                    <h1>社区互动</h1>
+                    <p class="lead">与其他Materials Studio用户交流，分享经验，探讨问题</p>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left" data-aos-duration="800" data-aos-delay="200">
+                    <div class="card border-0 shadow-lg">
+                        <div class="card-body">
+                            <form>
+                                <div class="input-group">
+                                    <input type="text" class="form-control search-input" placeholder="搜索讨论话题...">
+                                    <button class="btn btn-primary search-btn" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 社区内容主体区域 -->
+    <section class="py-5">
+        <div class="container">
+            <!-- 社区数据可视化区域 - 新增 -->
+            <div class="stats-visualization mb-5" data-aos="zoom-in" data-aos-duration="800">
+                <h5 class="mb-4"><i class="fas fa-chart-bar me-2"></i> 社区活跃度</h5>
+                <div class="row">
+                    <div class="col-md-3 text-center mb-3 mb-md-0">
+                        <div class="display-4 fw-bold text-primary">156</div>
+                        <p class="text-muted">今日新增讨论</p>
+                    </div>
+                    <div class="col-md-3 text-center mb-3 mb-md-0">
+                        <div class="display-4 fw-bold text-success">2.8k</div>
+                        <p class="text-muted">本周回复数</p>
+                    </div>
+                    <div class="col-md-3 text-center mb-3 mb-md-0">
+                        <div class="display-4 fw-bold text-info">43</div>
+                        <p class="text-muted">活跃专家</p>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <div class="display-4 fw-bold text-warning">8.2k</div>
+                        <p class="text-muted">社区用户</p>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <canvas id="communityActivityChart" height="100"></canvas>
+                </div>
+            </div>
+            
+            <div class="row">
+                <!-- 左侧主要内容区：讨论区 -->
+                <div class="col-lg-8">
+                    <!-- 讨论区标题和发布按钮 -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2>热门讨论</h2>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> 发起讨论
+                        </button>
+                    </div>
+
+                    <!-- 话题筛选标签栏 - 用于过滤不同类别的讨论 -->
+                    <div class="mb-4">
+                        <a href="#" class="badge bg-primary topic-tag">全部</a>
+                        <a href="#" class="badge bg-secondary topic-tag">CASTEP</a>
+                        <a href="#" class="badge bg-success topic-tag">Forcite</a>
+                        <a href="#" class="badge bg-info topic-tag">DMol3</a>
+                        <a href="#" class="badge bg-warning text-dark topic-tag">Amorphous Cell</a>
+                        <a href="#" class="badge bg-danger topic-tag">参数设置</a>
+                        <a href="#" class="badge bg-dark topic-tag">脚本编程</a>
+                    </div>
+
+                    <!-- 话题列表卡片 - 展示所有讨论主题 -->
+                    <div class="card community-card mb-4">
+                        <div class="card-body p-0">
+                            <!-- 话题1 - CASTEP计算参数优化讨论 -->
+                            <div class="topic-list-item p-3">
+                                <div class="row">
+                                    <!-- 话题标题、分类和发布者信息 -->
+                                    <div class="col-md-8">
+                                        <h5><a href="#" class="text-decoration-none">CASTEP计算中如何优化k点设置提高效率？</a></h5>
+                                        <div class="mb-2">
+                                            <span class="badge bg-primary">CASTEP</span>
+                                            <span class="badge bg-danger">参数设置</span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/40?text=李" class="user-avatar me-2" alt="用户头像">
+                                            <span class="me-3">李博士</span>
+                                            <small class="text-muted">2023-10-25 发布</small>
+                                        </div>
+                                    </div>
+                                    <!-- 话题互动数据：评论数、浏览量、点赞数 -->
+                                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                        <div class="d-flex justify-content-md-end">
+                                            <div class="me-3">
+                                                <i class="far fa-comment"></i> 23
+                                            </div>
+                                            <div class="me-3">
+                                                <i class="far fa-eye"></i> 156
+                                            </div>
+                                            <div>
+                                                <i class="far fa-thumbs-up"></i> 18
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 话题2 - Python脚本分享（会员专享内容） -->
+                            <div class="topic-list-item p-3">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <h5><a href="#" class="text-decoration-none">分享一个批量处理晶体结构的Python脚本</a></h5>
+                                        <div class="mb-2">
+                                            <span class="badge bg-dark">脚本编程</span>
+                                            <span class="member-badge">会员分享</span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/40?text=王" class="user-avatar me-2" alt="用户头像">
+                                            <span class="me-3">王工程师</span>
+                                            <small class="text-muted">2023-10-23 发布</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                        <div class="d-flex justify-content-md-end">
+                                            <div class="me-3">
+                                                <i class="far fa-comment"></i> 41
+                                            </div>
+                                            <div class="me-3">
+                                                <i class="far fa-eye"></i> 278
+                                            </div>
+                                            <div>
+                                                <i class="far fa-thumbs-up"></i> 35
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 话题3 - Amorphous Cell模块讨论 -->
+                            <div class="topic-list-item p-3">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <h5><a href="#" class="text-decoration-none">Amorphous Cell模块构建聚合物模型的经验分享</a></h5>
+                                        <div class="mb-2">
+                                            <span class="badge bg-warning text-dark">Amorphous Cell</span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/40?text=张" class="user-avatar me-2" alt="用户头像">
+                                            <span class="me-3">张教授</span>
+                                            <small class="text-muted">2023-10-20 发布</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                        <div class="d-flex justify-content-md-end">
+                                            <div class="me-3">
+                                                <i class="far fa-comment"></i> 19
+                                            </div>
+                                            <div class="me-3">
+                                                <i class="far fa-eye"></i> 132
+                                            </div>
+                                            <div>
+                                                <i class="far fa-thumbs-up"></i> 12
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 话题4 - DMol3计算问题解决 -->
+                            <div class="topic-list-item p-3">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <h5><a href="#" class="text-decoration-none">DMol3计算过程中遇到收敛问题的解决方案</a></h5>
+                                        <div class="mb-2">
+                                            <span class="badge bg-info">DMol3</span>
+                                            <span class="badge bg-danger">参数设置</span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/40?text=赵" class="user-avatar me-2" alt="用户头像">
+                                            <span class="me-3">赵研究员</span>
+                                            <small class="text-muted">2023-10-18 发布</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                        <div class="d-flex justify-content-md-end">
+                                            <div class="me-3">
+                                                <i class="far fa-comment"></i> 28
+                                            </div>
+                                            <div class="me-3">
+                                                <i class="far fa-eye"></i> 195
+                                            </div>
+                                            <div>
+                                                <i class="far fa-thumbs-up"></i> 22
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 分页导航控件 - 用于浏览更多话题 -->
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">上一页</a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">下一页</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <!-- 右侧边栏区域 -->
+                <div class="col-lg-4">
+                    <!-- 活动公告模块 - 展示近期平台活动信息 -->
+                    <div class="card community-card mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-bullhorn me-2"></i> 活动公告</h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- 活动1：线上工作坊 -->
+                            <div class="event-card">
+                                <div class="row g-0">
+                                    <div class="col-3">
+                                        <div class="event-date">
+                                            <div class="event-day">12</div>
+                                            <div>11月</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-9">
+                                        <div class="p-3">
+                                            <h6>Materials Studio线上工作坊</h6>
+                                            <p class="small mb-1">CASTEP模块高级应用</p>
+                                            <a href="#" class="btn btn-sm btn-outline-primary">立即报名</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 活动2：专家答疑日 -->
+                            <div class="event-card">
+                                <div class="row g-0">
+                                    <div class="col-3">
+                                        <div class="event-date">
+                                            <div class="event-day">25</div>
+                                            <div>11月</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-9">
+                                        <div class="p-3">
+                                            <h6>专家在线答疑日</h6>
+                                            <p class="small mb-1">专注解决Forcite计算问题</p>
+                                            <span class="badge bg-success">免费活动</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <a href="#" class="btn btn-sm btn-outline-primary d-block mt-3">查看更多活动</a>
+                        </div>
+                    </div>
+
+                    <!-- 活跃用户模块 - 展示社区活跃贡献者 -->
+                    <div class="card community-card mb-4">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0"><i class="fas fa-user-friends me-2"></i> 活跃用户</h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- 用户1 -->
+                            <div class="row align-items-center mb-3">
+                                <div class="col-2 text-center">
+                                    <img src="https://via.placeholder.com/50?text=王" class="user-avatar" alt="用户头像">
+                                </div>
+                                <div class="col-7">
+                                    <h6 class="mb-0">王工程师</h6>
+                                    <small class="text-muted">已分享15个脚本</small>
+                                </div>
+                                <div class="col-3 text-end">
+                                    <button class="btn btn-sm btn-outline-primary">关注</button>
+                                </div>
+                            </div>
+                            
+                            <!-- 用户2 -->
+                            <div class="row align-items-center mb-3">
+                                <div class="col-2 text-center">
+                                    <img src="https://via.placeholder.com/50?text=李" class="user-avatar" alt="用户头像">
+                                </div>
+                                <div class="col-7">
+                                    <h6 class="mb-0">李博士</h6>
+                                    <small class="text-muted">已回答32个问题</small>
+                                </div>
+                                <div class="col-3 text-end">
+                                    <button class="btn btn-sm btn-outline-primary">关注</button>
+                                </div>
+                            </div>
+                            
+                            <!-- 用户3 -->
+                            <div class="row align-items-center mb-3">
+                                <div class="col-2 text-center">
+                                    <img src="https://via.placeholder.com/50?text=张" class="user-avatar" alt="用户头像">
+                                </div>
+                                <div class="col-7">
+                                    <h6 class="mb-0">张教授</h6>
+                                    <small class="text-muted">已发布8个教程</small>
+                                </div>
+                                <div class="col-3 text-end">
+                                    <button class="btn btn-sm btn-outline-primary">关注</button>
+                                </div>
+                            </div>
+                            
+                            <a href="#" class="btn btn-sm btn-outline-success d-block mt-2">查看更多用户</a>
+                        </div>
+                    </div>
+
+                    <!-- 社区动态模块 - 实时显示社区最新活动 -->
+                    <div class="card community-card">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0"><i class="fas fa-rss me-2"></i> 社区动态</h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- 动态1 -->
+                            <div class="activity-item">
+                                <div class="activity-dot"></div>
+                                <p class="mb-1"><strong>王工程师</strong> 分享了一个新脚本</p>
+                                <p class="small text-muted mb-0">30分钟前</p>
+                            </div>
+                            
+                            <!-- 动态2 -->
+                            <div class="activity-item">
+                                <div class="activity-dot"></div>
+                                <p class="mb-1"><strong>李博士</strong> 回答了一个问题</p>
+                                <p class="small text-muted mb-0">2小时前</p>
+                            </div>
+                            
+                            <!-- 动态3 -->
+                            <div class="activity-item">
+                                <div class="activity-dot"></div>
+                                <p class="mb-1"><strong>张教授</strong> 发布了新讨论</p>
+                                <p class="small text-muted mb-0">5小时前</p>
+                            </div>
+                            
+                            <!-- 动态4 -->
+                            <div class="activity-item">
+                                <div class="activity-dot"></div>
+                                <p class="mb-1"><strong>赵研究员</strong> 上传了一个新资源</p>
+                                <p class="small text-muted mb-0">昨天</p>
+                            </div>
+                            
+                            <a href="#" class="btn btn-sm btn-outline-info d-block mt-2">查看更多动态</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 登录模态框 - 用户登录弹出窗口 -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">用户登录</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- 登录表单 -->
+                    <form>
+                        <!-- 邮箱输入框 -->
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">邮箱地址</label>
+                            <input type="email" class="form-control" id="loginEmail" required>
+                        </div>
+                        <!-- 密码输入框 -->
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">密码</label>
+                            <input type="password" class="form-control" id="loginPassword" required>
+                        </div>
+                        <!-- 记住我选项 -->
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">记住我</label>
+                        </div>
+                        <!-- 登录按钮 -->
+                        <button type="submit" class="btn btn-primary w-100">登录</button>
+                    </form>
+                    <!-- 辅助链接：忘记密码和注册新账号 -->
+                    <div class="text-center mt-3">
+                        <a href="#" class="text-decoration-none">忘记密码?</a>
+                        <span class="mx-2">|</span>
+                        <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#registerModal" data-bs-dismiss="modal">注册新账号</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 注册模态框 - 新用户注册弹出窗口 -->
+    <div class="modal fade" id="registerModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">用户注册</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- 注册表单 -->
+                    <form>
+                        <!-- 用户名输入框 -->
+                        <div class="mb-3">
+                            <label for="registerName" class="form-label">用户名</label>
+                            <input type="text" class="form-control" id="registerName" required>
+                        </div>
+                        <!-- 邮箱输入框 -->
+                        <div class="mb-3">
+                            <label for="registerEmail" class="form-label">邮箱地址</label>
+                            <input type="email" class="form-control" id="registerEmail" required>
+                        </div>
+                        <!-- 密码输入框 -->
+                        <div class="mb-3">
+                            <label for="registerPassword" class="form-label">密码</label>
+                            <input type="password" class="form-control" id="registerPassword" required>
+                        </div>
+                        <!-- 确认密码输入框 -->
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">确认密码</label>
+                            <input type="password" class="form-control" id="confirmPassword" required>
+                        </div>
+                        <!-- 用户身份选择下拉框 -->
+                        <div class="mb-3">
+                            <label for="userType" class="form-label">您的身份</label>
+                            <select class="form-select" id="userType">
+                                <option selected>请选择</option>
+                                <option value="researcher">研究人员</option>
+                                <option value="student">学生</option>
+                                <option value="engineer">工程师</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </div>
+                        <!-- 服务条款同意复选框 -->
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                            <label class="form-check-label" for="agreeTerms">我同意<a href="#">服务条款</a>和<a href="#">隐私政策</a></label>
+                        </div>
+                        <!-- 注册按钮 -->
+                        <button type="submit" class="btn btn-primary w-100">注册</button>
+                    </form>
+                    <!-- 已有账号登录链接 -->
+                    <div class="text-center mt-3">
+                        <span>已有账号?</span>
+                        <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">立即登录</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚区域 - 网站底部信息展示 -->
+    <footer class="py-4">
+        <div class="container">
+            <div class="row">
+                <!-- 网站介绍和社交媒体链接 -->
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5>Materials Studio 知识解答平台</h5>
+                    <p>专注于解答 Materials Studio 软件用户问题的在线服务网站。</p>
+                    <div class="social-links">
+                        <a href="#" class="me-2"><i class="fab fa-weixin fa-lg"></i></a>
+                        <a href="#" class="me-2"><i class="fab fa-weibo fa-lg"></i></a>
+                        <a href="#" class="me-2"><i class="fab fa-github fa-lg"></i></a>
+                    </div>
+                </div>
+                <!-- 网站导航链接 -->
+                <div class="col-lg-2 mb-4 mb-lg-0">
+                    <h5>平台</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="qa.html">问答中心</a></li>
+                        <li><a href="resources.html">资源库</a></li>
+                        <li><a href="community.html">社区互动</a></li>
+                    </ul>
+                </div>
+                <!-- 支持链接 -->
+                <div class="col-lg-2 mb-4 mb-lg-0">
+                    <h5>支持</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="#">常见问题</a></li>
+                        <li><a href="#">使用指南</a></li>
+                        <li><a href="#">联系我们</a></li>
+                        <li><a href="#">问题反馈</a></li>
+                    </ul>
+                </div>
+                <!-- 联系信息和订阅表单 -->
+                <div class="col-lg-4">
+                    <h5>联系我们</h5>
+                    <p><i class="fas fa-envelope me-2"></i> contact@msstudio-platform.com</p>
+                    <p><i class="fas fa-comments me-2"></i> 微信群：MS-Knowledge-Group</p>
+                    <!-- 资讯订阅表单 -->
+                    <form class="mt-3">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="订阅我们的最新资讯">
+                            <button class="btn btn-primary" type="button">订阅</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <hr class="my-4 bg-light">
+            <!-- 版权信息和法律链接 -->
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">© 2023 Materials Studio 知识解答平台 | 版权所有</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item"><a href="#">隐私政策</a></li>
+                        <li class="list-inline-item"><a href="#">服务条款</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 引入Bootstrap和Popper.js，用于实现交互功能 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        // 初始化AOS动画库
+        AOS.init({
+            once: true
+        });
+        
+        // 添加Chart.js数据可视化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 社区活跃度图表
+            const ctx = document.getElementById('communityActivityChart').getContext('2d');
+            const activityChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['一月', '二月', '三月', '四月', '五月', '六月', '七月'],
+                    datasets: [{
+                        label: '讨论主题',
+                        data: [65, 78, 90, 85, 120, 160, 185],
+                        fill: true,
+                        backgroundColor: 'rgba(0, 86, 179, 0.1)',
+                        borderColor: 'rgba(0, 86, 179, 0.8)',
+                        tension: 0.4,
+                        pointBackgroundColor: '#0056b3',
+                        pointBorderColor: '#fff',
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }, {
+                        label: '回复数量',
+                        data: [120, 165, 190, 210, 290, 320, 380],
+                        fill: true,
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        borderColor: 'rgba(52, 152, 219, 0.8)',
+                        tension: 0.4,
+                        pointBackgroundColor: '#3498db',
+                        pointBorderColor: '#fff',
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: '社区活跃度趋势'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // 为事件卡片添加鼠标悬停效果
+            const eventCards = document.querySelectorAll('.event-card');
+            eventCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px) scale(1.03)';
+                    this.style.boxShadow = '0 15px 30px rgba(0,0,0,0.2)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                    this.style.boxShadow = '';
+                });
+            });
+            
+            // 为话题列表项添加悬停效果
+            const topicItems = document.querySelectorAll('.topic-list-item');
+            topicItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.backgroundColor = 'rgba(0,86,179,0.03)';
+                    this.style.transform = 'translateX(5px)';
+                    this.style.transition = 'all 0.3s';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.backgroundColor = '';
+                    this.style.transform = '';
+                });
+            });
+            
+            // 设置当前页面导航高亮
+            setActiveNavItem();
+        });
+        
+        // 设置当前页面导航高亮
+        function setActiveNavItem() {
+            // 获取当前页面URL
+            const currentPage = window.location.pathname.split('/').pop();
+            
+            // 移除所有导航链接的active类
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // 设置当前页面对应的导航链接为active
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+                    link.classList.add('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html> 

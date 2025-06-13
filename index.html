@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Materials Studio 知识解答平台 - 专注于解答 Materials Studio 软件用户问题的在线服务网站">
+    <meta name="keywords" content="Materials Studio, 材料模拟, 分子模拟, 材料科学, 问答平台">
+    <title>Materials Studio 知识解答平台</title>
+    <!-- Preload critical resources -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Material Design Web Components -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/material-components-web@14.0.0/dist/material-components-web.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- 添加现代化UI库和动画效果库 -->
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <!-- 添加Progressive Web App支持 -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#1976d2">
+    <style>
+        :root {
+            /* Material Design调色板 */
+            --mdc-theme-primary: #1976d2;
+            --mdc-theme-secondary: #0d47a1;
+            --mdc-theme-background: #ffffff;
+            --mdc-theme-surface: #ffffff;
+            --mdc-theme-error: #b00020;
+            --mdc-theme-on-primary: #ffffff;
+            --mdc-theme-on-secondary: #ffffff;
+            --mdc-theme-on-surface: #000000;
+            --mdc-theme-on-error: #ffffff;
+            
+            /* 自定义颜色变量 */
+            --primary-color: #1976d2;
+            --secondary-color: #0d47a1;
+            --accent-color: #03a9f4;
+            --light-bg: #f5f5f5;
+            --member-color: #ffc107;
+            --success-color: #4caf50;
+            --info-color: #03a9f4;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --dark-color: #212121;
+            --text-color: #212121;
+            --light-text: #ffffff;
+            --border-radius: 8px;
+            --box-shadow: 0 2px 4px rgba(0,0,0,0.1), 0 4px 8px rgba(0,0,0,0.06);
+            --transition-speed: 0.3s;
+            --elevation-z1: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+            --elevation-z2: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+            --elevation-z4: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+            --elevation-z8: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
+        }
+        
+        /* Base Styles */
+        body {
+            font-family: 'Roboto', 'Microsoft YaHei', Arial, sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
+        }
+        
+        /* Navigation */
+        .navbar-brand img {
+            max-height: 40px;
+            transition: transform var(--transition-speed);
+        }
+        
+        .navbar-brand:hover img {
+            transform: scale(1.05);
+        }
+        
+        .navbar {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all var(--transition-speed);
+        }
+        
+        .navbar-dark .navbar-nav .nav-link {
+            color: rgba(255,255,255,.85);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all var(--transition-speed);
+            position: relative;
+        }
+        
+        .navbar-dark .navbar-nav .nav-link:hover,
+        .navbar-dark .navbar-nav .nav-link.active {
+            color: rgba(255,255,255,1);
+            background-color: rgba(255,255,255,0.2);
+            font-weight: 600;
+            position: relative;
+        }
+        
+        .navbar-dark .navbar-nav .nav-link i {
+            margin-right: 5px;
+            transition: transform var(--transition-speed);
+        }
+        
+        .navbar-dark .navbar-nav .nav-link:hover i {
+            transform: translateY(-2px);
+        }
+        
+        .navbar-dark .navbar-nav .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 3px;
+            background-color: var(--member-color);
+            border-radius: 3px;
+        }
+        
+        .member-badge {
+            background-color: var(--member-color);
+            color: #212529;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin-left: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        
+        .particles-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 80px 0;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+        }
+        
+        .hero-search-container {
+            position: relative;
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+        
+        .hero-search-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            font-size: 1.1rem;
+            box-shadow: var(--elevation-z4);
+            padding-right: 60px;
+            transition: all 0.3s ease;
+        }
+        
+        .hero-search-input:focus {
+            box-shadow: var(--elevation-z8);
+            outline: none;
+        }
+        
+        .hero-search-btn {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hero-search-btn:hover {
+            background: var(--secondary-color);
+            transform: scale(1.05);
+        }
+        
+        .hero-cards {
+            position: relative;
+            z-index: 3;
+            margin-top: -80px;
+        }
+        
+        .hero-card {
+            background: var(--mdc-theme-surface);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--elevation-z2);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .hero-card:hover {
+            box-shadow: var(--elevation-z4);
+            transform: translateY(-5px);
+        }
+        
+        .stat-card {
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            background: white;
+            box-shadow: var(--elevation-z1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .stat-card:hover {
+            box-shadow: var(--elevation-z4);
+            transform: translateY(-5px);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--text-color);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .stats-container {
+            margin-top: 2rem;
+            margin-bottom: -80px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Cards & Features */
+        .feature-card {
+            border-radius: var(--border-radius);
+            border: none;
+            box-shadow: var(--box-shadow);
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 15px;
+            transition: transform var(--transition-speed);
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+        }
+        
+        /* Member Section */
+        .member-section {
+            background-color: var(--light-bg);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .member-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--member-color), var(--accent-color));
+        }
+        
+        .member-card {
+            border: none;
+            border-radius: var(--border-radius);
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            box-shadow: 0 8px 20px rgba(0, 86, 179, 0.1);
+            transition: all var(--transition-speed);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .member-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, rgba(255,255,255,0), rgba(255,255,255,0.7), rgba(255,255,255,0));
+            transform: rotate(30deg);
+            z-index: -1;
+            transition: all 0.8s;
+            opacity: 0;
+        }
+        
+        .member-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 12px 25px rgba(0, 86, 179, 0.15);
+        }
+        
+        .member-card:hover::after {
+            animation: shine 1.5s;
+        }
+        
+        @keyframes shine {
+            0% {
+                left: -100%;
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                left: 100%;
+                opacity: 0;
+            }
+        }
+        
+        .btn-member {
+            background-color: var(--member-color);
+            border-color: var(--member-color);
+            color: #212529;
+            font-weight: 600;
+            padding: 8px 20px;
+            box-shadow: 0 4px 10px rgba(255, 193, 7, 0.3);
+            transition: all var(--transition-speed);
+        }
+        
+        .btn-member:hover {
+            background-color: #e0a800;
+            border-color: #e0a800;
+            box-shadow: 0 6px 15px rgba(255, 193, 7, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        /* Footer */
+        footer {
+            background: linear-gradient(to right, #2c3e50, #1a252f);
+            color: white;
+            padding: 40px 0 20px;
+            position: relative;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+        
+        .footer-links a {
+            color: rgba(255,255,255,.7);
+            text-decoration: none;
+            transition: all var(--transition-speed);
+            display: inline-block;
+            padding: 3px 0;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .footer-links i {
+            margin-right: 8px;
+            color: var(--accent-color);
+        }
+        
+        /* Text Effects */
+        .gradient-text {
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+        
+        /* Buttons & Interactions */
+        .hover-lift {
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all var(--transition-speed);
+            box-shadow: 0 4px 10px rgba(0, 86, 179, 0.3);
+        }
+        
+        .btn-primary:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+            z-index: -1;
+            transition: all 0.6s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 86, 179, 0.4);
+            background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+        }
+        
+        .btn-primary:hover:before {
+            left: 100%;
+        }
+        
+        /* 3D分子结构展示区域 */
+        .molecule-viewer {
+            width: 100%;
+            height: 400px;
+            background-color: rgba(0,0,0,0.05);
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--elevation-z4);
+            transition: all var(--transition-speed);
+        }
+        
+        .molecule-viewer:hover {
+            box-shadow: var(--elevation-z8);
+        }
+        
+        /* 专业数据可视化样式 */
+        .data-visualization {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            background: var(--light-bg);
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        /* 高级会员卡片样式 */
+        .membership-card {
+            border: none;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 86, 179, 0.1);
+            transition: all var(--transition-speed);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .membership-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 12px 25px rgba(0, 86, 179, 0.15);
+        }
+        
+        .premium-badge {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: linear-gradient(45deg, var(--member-color), #ff9800);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            box-shadow: 0 5px 10px rgba(255, 152, 0, 0.3);
+            z-index: 2;
+        }
+        
+        /* Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0, 86, 179, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid var(--primary-color);
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Carousel Enhancements */
+        .carousel-item {
+            height: 500px;
+            background-position: center;
+            background-size: cover;
+            position: relative;
+        }
+        
+        .carousel-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.1));
+        }
+        
+        .carousel-caption {
+            bottom: 20%;
+            text-align: center;
+        }
+        
+        .carousel-caption h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s;
+        }
+        
+        .carousel-caption p {
+            font-size: 1.2rem;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s 0.3s;
+            animation-fill-mode: both;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .hero-section {
+                padding: 60px 0;
+            }
+            
+            .carousel-item {
+                height: 400px;
+            }
+            
+            .carousel-caption h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 40px 0;
+            }
+            
+            .carousel-item {
+                height: 350px;
+            }
+            
+            .carousel-caption h2 {
+                font-size: 1.8rem;
+            }
+            
+            .carousel-caption p {
+                font-size: 1rem;
+            }
+            
+            .molecule-viewer {
+                height: 250px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .carousel-item {
+                height: 300px;
+            }
+            
+            .carousel-caption {
+                bottom: 10%;
+            }
+            
+            .carousel-caption h2 {
+                font-size: 1.5rem;
+            }
+            
+            .molecule-viewer {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页面加载动画 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="https://via.placeholder.com/150x40?text=MS+Platform" alt="Materials Studio 知识解答平台">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html"><i class="fas fa-home"></i> 首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="qa.html"><i class="fas fa-question-circle"></i> 问答中心</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="resources.html"><i class="fas fa-download"></i> 资源库</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="community.html"><i class="fas fa-users"></i> 社区互动</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="terminology.html"><i class="fas fa-book"></i> 术语表</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <button class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal">登录</button>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#registerModal">注册</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <section class="hero-section" id="hero">
+        <div id="particles-js" class="particles-container"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 hero-content" data-aos="fade-right">
+                    <h1 class="hero-title">Materials Studio <span class="gradient-text">知识解答平台</span></h1>
+                    <p class="hero-subtitle">专业的材料科学模拟软件解决方案，助力研究与教学，促进科学发现</p>
+                    
+                    <div class="d-flex flex-wrap gap-2 mt-4">
+                        <a href="qa.html" class="btn btn-light btn-lg px-4 py-2 me-3 hover-lift">
+                            <i class="material-icons align-middle me-2" style="font-size: 1.2rem;">help_outline</i>我要提问
+                        </a>
+                        <a href="resources.html" class="btn btn-outline-light btn-lg px-4 py-2 hover-lift">
+                            <i class="material-icons align-middle me-2" style="font-size: 1.2rem;">file_download</i>浏览资源
+                        </a>
+                    </div>
+                    
+                    <div class="hero-search-container mt-5">
+                        <input type="text" class="hero-search-input" placeholder="搜索问题、教程、资源..." aria-label="搜索">
+                        <button class="hero-search-btn">
+                            <i class="material-icons">search</i>
+                        </button>
+                    </div>
+                    
+                    <div class="d-flex flex-wrap gap-3 mt-4 popular-searches">
+                        <span class="badge rounded-pill bg-light text-dark px-3 py-2 hover-lift">分子动力学</span>
+                        <span class="badge rounded-pill bg-light text-dark px-3 py-2 hover-lift">密度泛函理论</span>
+                        <span class="badge rounded-pill bg-light text-dark px-3 py-2 hover-lift">晶体结构优化</span>
+                        <span class="badge rounded-pill bg-light text-dark px-3 py-2 hover-lift">吸附能计算</span>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="molecule-viewer" id="molecule-viewer">
+                        <!-- 3D分子结构将通过JavaScript渲染 -->
+                        <div class="text-center position-absolute start-50 top-50 translate-middle text-white">
+                            <div class="spinner-border text-light mb-2" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <div>加载分子结构...</div>
+                        </div>
+                    </div>
+                    <div class="bg-white bg-opacity-10 p-3 rounded-3 mt-3 text-white">
+                        <div class="d-flex align-items-center mb-2">
+                            <h5 class="mb-0 me-2">交互式分子结构示例</h5>
+                            <div class="badge bg-info rounded-pill">可互动</div>
+                        </div>
+                        <div class="d-flex justify-content-center mt-2">
+                            <button class="btn btn-sm btn-outline-light me-2" id="rotate-molecule"><i class="fas fa-sync-alt"></i> 旋转</button>
+                            <button class="btn btn-sm btn-outline-light me-2" id="zoom-in-molecule"><i class="fas fa-search-plus"></i> 放大</button>
+                            <button class="btn btn-sm btn-outline-light" id="zoom-out-molecule"><i class="fas fa-search-minus"></i> 缩小</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 平台统计数据 -->
+        <div class="container stats-container">
+            <div class="row g-4">
+                <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="stat-card">
+                        <div class="stat-value"><span class="counter">3500</span>+</div>
+                        <div class="stat-label">已解决问题</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="stat-card">
+                        <div class="stat-value"><span class="counter">1200</span>+</div>
+                        <div class="stat-label">共享资源</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="stat-card">
+                        <div class="stat-value"><span class="counter">50</span>+</div>
+                        <div class="stat-label">专家讲师</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="stat-card">
+                        <div class="stat-value"><span class="counter">98</span>%</div>
+                        <div class="stat-label">用户满意度</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 主要功能卡片 -->
+    <section class="py-5 mt-5" style="margin-top: 100px;">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="hero-card">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle p-3 me-3" style="background-color: rgba(25, 118, 210, 0.1); width: 64px; height: 64px;">
+                                <i class="material-icons" style="font-size: 32px; color: var(--primary-color);">question_answer</i>
+                            </div>
+                            <h3 class="mb-0 fs-4">专业问答</h3>
+                        </div>
+                        <p>获取Materials Studio软件使用过程中遇到问题的专业解答，由行业专家提供技术支持。</p>
+                        <a href="qa.html" class="btn btn-outline-primary mt-2">立即提问 <i class="material-icons align-middle ms-1" style="font-size: 1rem;">arrow_forward</i></a>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="hero-card">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle p-3 me-3" style="background-color: rgba(3, 169, 244, 0.1); width: 64px; height: 64px;">
+                                <i class="material-icons" style="font-size: 32px; color: var(--accent-color);">folder_shared</i>
+                            </div>
+                            <h3 class="mb-0 fs-4">资源共享</h3>
+                        </div>
+                        <p>分享和下载高质量的模拟参数模板、教程文档、脚本工具和项目文件，提高研究效率。</p>
+                        <a href="resources.html" class="btn btn-outline-primary mt-2">浏览资源 <i class="material-icons align-middle ms-1" style="font-size: 1rem;">arrow_forward</i></a>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="hero-card">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle p-3 me-3" style="background-color: rgba(255, 193, 7, 0.1); width: 64px; height: 64px;">
+                                <i class="material-icons" style="font-size: 32px; color: var(--member-color);">groups</i>
+                            </div>
+                            <h3 class="mb-0 fs-4">社区互动</h3>
+                        </div>
+                        <p>参与专题讨论、模拟挑战和最佳实践分享，与材料科学研究者建立联系和交流。</p>
+                        <a href="community.html" class="btn btn-outline-primary mt-2">加入社区 <i class="material-icons align-middle ms-1" style="font-size: 1rem;">arrow_forward</i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 平台介绍 -->
+    <section class="py-5 bg-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6" data-aos="fade-right">
+                    <h2 class="fw-bold mb-4">专业的<span class="gradient-text">材料科学知识平台</span></h2>
+                    <p class="lead text-muted mb-4">Materials Studio知识解答平台致力于为材料科学研究者提供专业的软件技术支持与知识分享环境。</p>
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle p-2 me-3" style="background-color: rgba(25, 118, 210, 0.1); width: 40px; height: 40px;">
+                                <i class="material-icons" style="color: var(--primary-color);">verified</i>
+                            </div>
+                            <div>
+                                <h5 class="mb-0">专家认证解答</h5>
+                                <p class="text-muted mb-0 small">由行业专家提供高质量问题解答和技术支持</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle p-2 me-3" style="background-color: rgba(25, 118, 210, 0.1); width: 40px; height: 40px;">
+                                <i class="material-icons" style="color: var(--primary-color);">api</i>
+                            </div>
+                            <div>
+                                <h5 class="mb-0">精准模拟参数</h5>
+                                <p class="text-muted mb-0 small">共享经过验证的高质量模拟参数和计算方法</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle p-2 me-3" style="background-color: rgba(25, 118, 210, 0.1); width: 40px; height: 40px;">
+                                <i class="material-icons" style="color: var(--primary-color);">school</i>
+                            </div>
+                            <div>
+                                <h5 class="mb-0">系统化学习资源</h5>
+                                <p class="text-muted mb-0 small">提供全面的教程和系统化的学习路径</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex mt-4">
+                        <a href="qa.html" class="btn btn-primary me-3 hover-lift">了解更多</a>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#membershipModal" class="btn btn-outline-primary hover-lift">查看会员权益</a>
+                    </div>
+                </div>
+                <div class="col-md-6" data-aos="fade-left">
+                    <div class="position-relative" style="box-shadow: var(--elevation-z4); border-radius: var(--border-radius); overflow: hidden;">
+                        <div class="ratio ratio-16x9">
+                            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Materials Studio 平台介绍" allowfullscreen></iframe>
+                        </div>
+                        <div class="position-absolute top-0 end-0 m-3">
+                            <span class="badge bg-danger px-3 py-2"><i class="material-icons align-middle me-1" style="font-size: 1rem;">play_arrow</i> 平台介绍</span>
+                        </div>
+                    </div>
+                    <div class="row mt-4 g-3">
+                        <div class="col-6">
+                            <div class="card h-100 border-0 shadow-sm hover-lift">
+                                <div class="card-body text-center">
+                                    <div class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill">有效解决</div>
+                                    <h3 class="fw-bold display-6 mb-0"><span class="counter">98</span>%</h3>
+                                    <p class="text-muted small">问题解决率</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card h-100 border-0 shadow-sm hover-lift">
+                                <div class="card-body text-center">
+                                    <div class="badge bg-success-subtle text-success mb-3 px-3 py-2 rounded-pill">快速响应</div>
+                                    <h3 class="fw-bold display-6 mb-0"><span class="counter">2</span>h</h3>
+                                    <p class="text-muted small">平均响应时间</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心功能 -->
+    <section class="py-5 bg-light position-relative overflow-hidden">
+        <!-- 背景装饰元素 -->
+        <div class="position-absolute" style="top: -50px; right: -50px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(25,118,210,0.1) 0%, rgba(25,118,210,0) 70%); border-radius: 50%;"></div>
+        <div class="position-absolute" style="bottom: -80px; left: -80px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(3,169,244,0.1) 0%, rgba(3,169,244,0) 70%); border-radius: 50%;"></div>
+        
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <div class="badge bg-primary px-3 py-2 rounded-pill mb-3">核心服务</div>
+                <h2 class="fw-bold display-5 mb-3">专业功能与服务</h2>
+                <div class="mx-auto" style="max-width: 600px;">
+                    <p class="lead text-muted">全方位服务满足您在 Materials Studio 使用过程中的各种需求</p>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle p-3 mb-3" style="background-color: rgba(25, 118, 210, 0.1); width: 60px; height: 60px;">
+                                <i class="material-icons" style="font-size: 28px; color: var(--primary-color);">help_center</i>
+                            </div>
+                            <h4 class="fw-bold">问题解答</h4>
+                            <p class="text-muted mb-0">获取专家级别的技术解答，解决模拟过程中的难题</p>
+                        </div>
+                        <div class="card-footer bg-transparent border-0 pb-4">
+                            <a href="qa.html" class="text-decoration-none stretched-link d-flex align-items-center">
+                                <span class="me-2">立即提问</span>
+                                <i class="material-icons" style="font-size: 16px;">arrow_forward</i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle p-3 mb-3" style="background-color: rgba(3, 169, 244, 0.1); width: 60px; height: 60px;">
+                                <i class="material-icons" style="font-size: 28px; color: var(--accent-color);">menu_book</i>
+                            </div>
+                            <h4 class="fw-bold">教程资源</h4>
+                            <p class="text-muted mb-0">系统化的学习资料，助您快速掌握软件各项功能</p>
+                        </div>
+                        <div class="card-footer bg-transparent border-0 pb-4">
+                            <a href="resources.html" class="text-decoration-none stretched-link d-flex align-items-center">
+                                <span class="me-2">浏览教程</span>
+                                <i class="material-icons" style="font-size: 16px;">arrow_forward</i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle p-3 mb-3" style="background-color: rgba(76, 175, 80, 0.1); width: 60px; height: 60px;">
+                                <i class="material-icons" style="font-size: 28px; color: var(--success-color);">code</i>
+                            </div>
+                            <h4 class="fw-bold">脚本工具</h4>
+                            <p class="text-muted mb-0">高效自动化脚本，简化复杂工作流程，提高研究效率</p>
+                        </div>
+                        <div class="card-footer bg-transparent border-0 pb-4">
+                            <a href="resources.html#scripts" class="text-decoration-none stretched-link d-flex align-items-center">
+                                <span class="me-2">获取工具</span>
+                                <i class="material-icons" style="font-size: 16px;">arrow_forward</i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        <div class="card-body p-4">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle p-3 mb-3" style="background-color: rgba(255, 193, 7, 0.1); width: 60px; height: 60px;">
+                                <i class="material-icons" style="font-size: 28px; color: var(--member-color);">group_work</i>
+                            </div>
+                            <h4 class="fw-bold">社区互动</h4>
+                            <p class="text-muted mb-0">参与专题讨论，分享经验与见解，建立学术人脉</p>
+                        </div>
+                        <div class="card-footer bg-transparent border-0 pb-4">
+                            <a href="community.html" class="text-decoration-none stretched-link d-flex align-items-center">
+                                <span class="me-2">加入社区</span>
+                                <i class="material-icons" style="font-size: 16px;">arrow_forward</i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 实时平台数据 -->
+            <div class="row mt-5">
+                <div class="col-lg-10 mx-auto">
+                    <div class="card border-0 shadow">
+                        <div class="card-header bg-white border-0 py-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0 fw-bold">平台实时数据</h5>
+                                <span class="badge bg-success px-3 py-2">实时更新</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-md-3 col-6 mb-4 mb-md-0">
+                                    <div class="d-flex align-items-center justify-content-center flex-column">
+                                        <div class="rounded-circle p-3 mb-3" style="background-color: rgba(25, 118, 210, 0.1); width: 70px; height: 70px;">
+                                            <i class="material-icons" style="font-size: 32px; color: var(--primary-color);">question_answer</i>
+                                        </div>
+                                        <h3 class="fw-bold display-6 mb-1"><span class="counter">3500</span>+</h3>
+                                        <p class="text-muted mb-0">已解决问题</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6 mb-4 mb-md-0">
+                                    <div class="d-flex align-items-center justify-content-center flex-column">
+                                        <div class="rounded-circle p-3 mb-3" style="background-color: rgba(3, 169, 244, 0.1); width: 70px; height: 70px;">
+                                            <i class="material-icons" style="font-size: 32px; color: var(--accent-color);">folder</i>
+                                        </div>
+                                        <h3 class="fw-bold display-6 mb-1"><span class="counter">1200</span>+</h3>
+                                        <p class="text-muted mb-0">共享资源</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="d-flex align-items-center justify-content-center flex-column">
+                                        <div class="rounded-circle p-3 mb-3" style="background-color: rgba(76, 175, 80, 0.1); width: 70px; height: 70px;">
+                                            <i class="material-icons" style="font-size: 32px; color: var(--success-color);">person</i>
+                                        </div>
+                                        <h3 class="fw-bold display-6 mb-1"><span class="counter">50</span>+</h3>
+                                        <p class="text-muted mb-0">专家讲师</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="d-flex align-items-center justify-content-center flex-column">
+                                        <div class="rounded-circle p-3 mb-3" style="background-color: rgba(255, 193, 7, 0.1); width: 70px; height: 70px;">
+                                            <i class="material-icons" style="font-size: 32px; color: var(--member-color);">thumb_up</i>
+                                        </div>
+                                        <h3 class="fw-bold display-6 mb-1"><span class="counter">98</span>%</h3>
+                                        <p class="text-muted mb-0">用户满意度</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: var(--primary-color);" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="d-flex justify-content-between mt-2">
+                                    <small class="text-muted">本月活跃度</small>
+                                    <small class="text-primary fw-bold">75%</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 会员权益 -->
+    <section class="py-5 bg-white position-relative overflow-hidden">
+        <!-- 背景装饰 -->
+        <div class="position-absolute" style="top: 0; right: 0; width: 300px; height: 300px; background: url('https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-1.2.1&auto=format&fit=crop&q=80&w=500') center/cover; opacity: 0.03; z-index: 0;"></div>
+        <div class="position-absolute" style="bottom: 0; left: 0; width: 300px; height: 300px; background: url('https://images.unsplash.com/photo-1510906594845-bc082582c8cc?ixlib=rb-1.2.1&auto=format&fit=crop&q=80&w=500') center/cover; opacity: 0.03; z-index: 0;"></div>
+        
+        <div class="container position-relative" style="z-index: 1;">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <div class="badge bg-warning px-3 py-2 rounded-pill mb-3">会员专享</div>
+                <h2 class="fw-bold display-5 mb-3">会员权益与服务</h2>
+                <div class="mx-auto" style="max-width: 600px;">
+                    <p class="lead text-muted">升级为会员，获取更多专业支持和独家资源，加速您的研究进程</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card border-0 shadow-sm hover-lift h-100 membership-card">
+                        <div class="card-header border-0 bg-white text-center pt-4 pb-0">
+                            <span class="badge bg-light text-primary px-3 py-2 rounded-pill mb-2">基础版</span>
+                            <h3 class="fw-bold">月度会员</h3>
+                            <div class="py-3">
+                                <span class="display-4 fw-bold">¥49</span>
+                                <span class="text-muted">/月</span>
+                            </div>
+                        </div>
+                        <div class="card-body px-4">
+                            <ul class="list-unstyled">
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="material-icons text-success me-2">check_circle</i>
+                                    <span>完整问答内容访问</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="material-icons text-success me-2">check_circle</i>
+                                    <span>基础资源下载</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="material-icons text-success me-2">check_circle</i>
+                                    <span>月度优先响应</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3 text-muted">
+                                    <i class="material-icons text-muted me-2">cancel</i>
+                                    <span>专家一对一咨询</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3 text-muted">
+                                    <i class="material-icons text-muted me-2">cancel</i>
+                                    <span>高级教程与案例</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-footer border-0 bg-white text-center py-4">
+                            <button class="btn btn-outline-primary px-4 py-2 rounded-pill w-100">选择此方案</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card border-0 shadow h-100 membership-card border-primary" style="transform: translateY(-15px);">
+                        <div class="position-absolute" style="top: -15px; left: 50%; transform: translateX(-50%);">
+                            <span class="badge bg-primary px-3 py-2 rounded-pill">推荐</span>
+                        </div>
+                        <div class="card-header border-0 bg-white text-center pt-4 pb-0">
+                            <span class="badge bg-light text-primary px-3 py-2 rounded-pill mb-2">标准版</span>
+                            <h3 class="fw-bold">年度会员</h3>
+                            <div class="py-3">
+                                <span class="display-4 fw-bold">¥499</span>
+                                <span class="text-muted">/年</span>
+                                <div class="text-success small">节省 ¥89</div>
+                            </div>
+                        </div>
+                        <div class="card-body px-4">
+                            <ul class="list-unstyled">
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="material-icons text-success me-2">check_circle</i>
+                                    <span>完整问答内容访问</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="material-icons text-success me-2">check_circle</i>
+                                    <span>所有资源完整下载</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="material-icons text-success me-2">check_circle</i>
+                                    <span>优先响应服务</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="material-icons text-success me-2">check_circle</i>
+                                    <span>月度专家咨询（1次）</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="material-icons text-success me-2">check_circle</i>
+                                    <span>高级教程与案例</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-footer border-0 bg-white text-center py-4">
+                            <button class="btn btn-primary px-4 py-2 rounded-pill w-100">选择此方案</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card border-0 shadow-sm hover-lift h-100 membership-card">
+                        <div class="card-header border-0 bg-white text-center pt-4 pb-0">
+                            <span class="badge bg-light text-primary px-3 py-2 rounded-pill mb-2">高级版</span>
+                            <h3 class="fw-bold">团队版</h3>
+                            <div class="py-3">
+                                <span class="display-4 fw-bold">¥999</span>
+                                <span class="text-muted">/年</span>
+                                <div class="text-success small">最多5个用户</div>
+                            </div>
+                        </div>
+                        <div class="card-body px-4">
+                            <ul class="list-unstyled">
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="material-icons text-success me-2">check_circle</i>
+                                    <span>完整问答内容访问</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="material-icons text-success me-2">check_circle</i>
+                                    <span>所有资源完整下载</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="material-icons text-success me-2">check_circle</i>
+                                    <span>优先响应服务</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="material-icons text-success me-2">check_circle</i>
+                                    <span>月度专家咨询（4次）</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="material-icons text-success me-2">check_circle</i>
+                                    <span>团队协作空间</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-footer border-0 bg-white text-center py-4">
+                            <button class="btn btn-outline-primary px-4 py-2 rounded-pill w-100">选择此方案</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-5 pt-3">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card border-0 shadow-sm bg-light p-4 text-center" data-aos="fade-up">
+                        <h4>还有疑问？</h4>
+                        <p class="mb-4">如果您对会员方案有任何疑问，请随时联系我们的客服团队</p>
+                        <div class="d-flex justify-content-center">
+                            <a href="#" class="btn btn-primary me-3">
+                                <i class="material-icons align-middle me-1" style="font-size: 1rem;">chat</i> 在线咨询
+                            </a>
+                            <a href="mailto:contact@msstudio-platform.com" class="btn btn-outline-primary">
+                                <i class="material-icons align-middle me-1" style="font-size: 1rem;">mail</i> 发送邮件
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 用户反馈 -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <div class="badge bg-primary px-3 py-2 rounded-pill mb-3">用户评价</div>
+                <h2 class="fw-bold display-5 mb-3">专业用户反馈</h2>
+                <div class="mx-auto" style="max-width: 600px;">
+                    <p class="lead text-muted">来自全球材料科学研究者的真实评价</p>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card border-0 shadow-sm p-4 h-100">
+                        <div class="d-flex mb-4">
+                            <div class="text-warning">
+                                <i class="material-icons">star</i>
+                                <i class="material-icons">star</i>
+                                <i class="material-icons">star</i>
+                                <i class="material-icons">star</i>
+                                <i class="material-icons">star</i>
+                            </div>
+                        </div>
+                        <p class="mb-4">"Materials Studio知识解答平台帮助我解决了多个复杂的分子模拟问题，大大提高了我的研究效率。平台上的专家解答非常专业且高效。"</p>
+                        <div class="d-flex align-items-center mt-auto">
+                            <div class="rounded-circle overflow-hidden me-3" style="width: 50px; height: 50px;">
+                                <img src="https://i.pravatar.cc/100?img=1" alt="用户头像" class="img-fluid">
+                            </div>
+                            <div>
+                                <h6 class="mb-0">张教授</h6>
+                                <small class="text-muted">北京大学材料科学系</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card border-0 shadow-sm p-4 h-100">
+                        <div class="d-flex mb-4">
+                            <div class="text-warning">
+                                <i class="material-icons">star</i>
+                                <i class="material-icons">star</i>
+                                <i class="material-icons">star</i>
+                                <i class="material-icons">star</i>
+                                <i class="material-icons">star</i>
+                            </div>
+                        </div>
+                        <p class="mb-4">"平台上丰富的教程和案例资源帮助我的团队快速上手并掌握了Materials Studio软件的核心功能，会员服务提供的专家咨询特别有价值。"</p>
+                        <div class="d-flex align-items-center mt-auto">
+                            <div class="rounded-circle overflow-hidden me-3" style="width: 50px; height: 50px;">
+                                <img src="https://i.pravatar.cc/100?img=2" alt="用户头像" class="img-fluid">
+                            </div>
+                            <div>
+                                <h6 class="mb-0">李博士</h6>
+                                <small class="text-muted">中科院材料研究所</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card border-0 shadow-sm p-4 h-100">
+                        <div class="d-flex mb-4">
+                            <div class="text-warning">
+                                <i class="material-icons">star</i>
+                                <i class="material-icons">star</i>
+                                <i class="material-icons">star</i>
+                                <i class="material-icons">star</i>
+                                <i class="material-icons">star_half</i>
+                            </div>
+                        </div>
+                        <p class="mb-4">"作为一名研究生，平台上的分步教程和脚本工具帮助我克服了许多技术障碍。社区中的经验分享和讨论也非常有价值，拓宽了我的研究思路。"</p>
+                        <div class="d-flex align-items-center mt-auto">
+                            <div class="rounded-circle overflow-hidden me-3" style="width: 50px; height: 50px;">
+                                <img src="https://i.pravatar.cc/100?img=5" alt="用户头像" class="img-fluid">
+                            </div>
+                            <div>
+                                <h6 class="mb-0">王同学</h6>
+                                <small class="text-muted">清华大学研究生</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="pt-5 pb-4">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                    <div class="mb-4">
+                        <img src="https://via.placeholder.com/180x50?text=MS+Platform" alt="Materials Studio 知识解答平台" class="img-fluid mb-3">
+                        <p class="text-white-50">Materials Studio 知识解答平台致力于为材料科学研究人员提供专业的技术支持和学习资源，促进科学研究与知识共享。</p>
+                    </div>
+                    <div class="d-flex gap-2 mb-4">
+                        <a href="#" class="btn btn-outline-light rounded-circle" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                            <i class="fab fa-weixin"></i>
+                        </a>
+                        <a href="#" class="btn btn-outline-light rounded-circle" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                            <i class="fab fa-weibo"></i>
+                        </a>
+                        <a href="#" class="btn btn-outline-light rounded-circle" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="btn btn-outline-light rounded-circle" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                            <i class="fab fa-zhihu"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+                    <h5 class="text-white mb-4">平台导航</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="index.html"><i class="material-icons align-middle me-2" style="font-size: 1rem;">home</i>首页</a></li>
+                        <li class="mb-2"><a href="qa.html"><i class="material-icons align-middle me-2" style="font-size: 1rem;">question_answer</i>问答中心</a></li>
+                        <li class="mb-2"><a href="resources.html"><i class="material-icons align-middle me-2" style="font-size: 1rem;">folder_shared</i>资源库</a></li>
+                        <li class="mb-2"><a href="community.html"><i class="material-icons align-middle me-2" style="font-size: 1rem;">groups</i>社区互动</a></li>
+                        <li class="mb-2"><a href="terminology.html"><i class="material-icons align-middle me-2" style="font-size: 1rem;">menu_book</i>术语表</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-white mb-4">用户服务</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="#" data-bs-toggle="modal" data-bs-target="#loginModal"><i class="material-icons align-middle me-2" style="font-size: 1rem;">login</i>登录</a></li>
+                        <li class="mb-2"><a href="#" data-bs-toggle="modal" data-bs-target="#registerModal"><i class="material-icons align-middle me-2" style="font-size: 1rem;">person_add</i>注册</a></li>
+                        <li class="mb-2"><a href="#" data-bs-toggle="modal" data-bs-target="#membershipModal"><i class="material-icons align-middle me-2" style="font-size: 1rem;">workspace_premium</i>会员服务</a></li>
+                        <li class="mb-2"><a href="#"><i class="material-icons align-middle me-2" style="font-size: 1rem;">support_agent</i>技术支持</a></li>
+                        <li class="mb-2"><a href="#"><i class="material-icons align-middle me-2" style="font-size: 1rem;">help_outline</i>帮助中心</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="text-white mb-4">联系我们</h5>
+                    <ul class="list-unstyled footer-links mb-4">
+                        <li class="mb-3 d-flex">
+                            <i class="material-icons text-light me-3" style="font-size: 1.2rem;">email</i>
+                            <a href="mailto:contact@msstudio-platform.com">contact@msstudio-platform.com</a>
+                        </li>
+                        <li class="mb-3 d-flex">
+                            <i class="material-icons text-light me-3" style="font-size: 1.2rem;">phone</i>
+                            <a href="tel:+861012345678">+86 10 1234 5678</a>
+                        </li>
+                        <li class="mb-3 d-flex">
+                            <i class="material-icons text-light me-3" style="font-size: 1.2rem;">location_on</i>
+                            <span>北京市海淀区中关村科技园</span>
+                        </li>
+                    </ul>
+                    <h5 class="text-white mb-3">订阅更新</h5>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="输入您的邮箱地址" aria-label="邮箱地址">
+                        <button class="btn btn-primary" type="button">
+                            <i class="material-icons align-middle" style="font-size: 1rem;">send</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <hr class="mt-4 mb-3 bg-secondary">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="text-white-50 mb-md-0">&copy; 2024 Materials Studio 知识解答平台. 保留所有权利</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-white-50 me-3">隐私政策</a>
+                    <a href="#" class="text-white-50 me-3">使用条款</a>
+                    <a href="#" class="text-white-50">网站地图</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 登录模态框 -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="loginModalLabel">用户登录</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">邮箱地址</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="material-icons">email</i></span>
+                                <input type="email" class="form-control" id="loginEmail" placeholder="请输入您的邮箱" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">密码</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="material-icons">lock</i></span>
+                                <input type="password" class="form-control" id="loginPassword" placeholder="请输入您的密码" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">记住我</label>
+                            <a href="#" class="float-end text-decoration-none">忘记密码?</a>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">登录</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p class="mb-0">还没有账号? <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal" data-bs-dismiss="modal" class="text-decoration-none">立即注册</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 注册模态框 -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="registerModalLabel">注册账号</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="registerName" class="form-label">用户名</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="material-icons">person</i></span>
+                                <input type="text" class="form-control" id="registerName" placeholder="请输入您的用户名" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerEmail" class="form-label">邮箱地址</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="material-icons">email</i></span>
+                                <input type="email" class="form-control" id="registerEmail" placeholder="请输入您的邮箱" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerPassword" class="form-label">密码</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="material-icons">lock</i></span>
+                                <input type="password" class="form-control" id="registerPassword" placeholder="请设置您的密码" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerConfirmPassword" class="form-label">确认密码</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="material-icons">lock</i></span>
+                                <input type="password" class="form-control" id="registerConfirmPassword" placeholder="请再次输入密码" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                            <label class="form-check-label" for="agreeTerms">我已阅读并同意 <a href="#" class="text-decoration-none">用户协议</a> 和 <a href="#" class="text-decoration-none">隐私政策</a></label>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">注册</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p class="mb-0">已有账号? <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal" class="text-decoration-none">立即登录</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 会员模态框 -->
+    <div class="modal fade" id="membershipModal" tabindex="-1" aria-labelledby="membershipModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0 bg-primary text-white">
+                    <h5 class="modal-title" id="membershipModalLabel"><i class="material-icons align-middle me-2" style="font-size: 1.2rem;">workspace_premium</i>会员方案</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <div class="p-4 h-100 d-flex flex-column">
+                                <h6 class="text-primary fw-bold mb-2">基础版</h6>
+                                <h4 class="mb-3">月度会员</h4>
+                                <div class="mb-4">
+                                    <span class="display-5 fw-bold">¥49</span>
+                                    <span class="text-muted">/月</span>
+                                </div>
+                                <ul class="list-unstyled mb-4 flex-grow-1">
+                                    <li class="d-flex align-items-center mb-3">
+                                        <i class="material-icons text-success me-2" style="font-size: 1.2rem;">check_circle</i>
+                                        <span>完整问答内容访问</span>
+                                    </li>
+                                    <li class="d-flex align-items-center mb-3">
+                                        <i class="material-icons text-success me-2" style="font-size: 1.2rem;">check_circle</i>
+                                        <span>基础资源下载</span>
+                                    </li>
+                                    <li class="d-flex align-items-center mb-3 text-muted">
+                                        <i class="material-icons text-muted me-2" style="font-size: 1.2rem;">cancel</i>
+                                        <span>专家一对一咨询</span>
+                                    </li>
+                                </ul>
+                                <button class="btn btn-outline-primary rounded-pill mt-auto">选择此方案</button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 bg-light">
+                            <div class="p-4 h-100 d-flex flex-column position-relative">
+                                <div class="position-absolute top-0 end-0 m-3">
+                                    <span class="badge bg-warning px-3 py-2 rounded-pill">推荐</span>
+                                </div>
+                                <h6 class="text-primary fw-bold mb-2">标准版</h6>
+                                <h4 class="mb-3">年度会员</h4>
+                                <div class="mb-4">
+                                    <span class="display-5 fw-bold">¥499</span>
+                                    <span class="text-muted">/年</span>
+                                    <div class="text-success small">节省 ¥89</div>
+                                </div>
+                                <ul class="list-unstyled mb-4 flex-grow-1">
+                                    <li class="d-flex align-items-center mb-3">
+                                        <i class="material-icons text-success me-2" style="font-size: 1.2rem;">check_circle</i>
+                                        <span>完整问答内容访问</span>
+                                    </li>
+                                    <li class="d-flex align-items-center mb-3">
+                                        <i class="material-icons text-success me-2" style="font-size: 1.2rem;">check_circle</i>
+                                        <span>所有资源完整下载</span>
+                                    </li>
+                                    <li class="d-flex align-items-center mb-3">
+                                        <i class="material-icons text-success me-2" style="font-size: 1.2rem;">check_circle</i>
+                                        <span>月度专家咨询（1次）</span>
+                                    </li>
+                                </ul>
+                                <button class="btn btn-primary rounded-pill mt-auto">选择此方案</button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-4 h-100 d-flex flex-column">
+                                <h6 class="text-primary fw-bold mb-2">高级版</h6>
+                                <h4 class="mb-3">团队版</h4>
+                                <div class="mb-4">
+                                    <span class="display-5 fw-bold">¥999</span>
+                                    <span class="text-muted">/年</span>
+                                    <div class="text-success small">最多5个用户</div>
+                                </div>
+                                <ul class="list-unstyled mb-4 flex-grow-1">
+                                    <li class="d-flex align-items-center mb-3">
+                                        <i class="material-icons text-success me-2" style="font-size: 1.2rem;">check_circle</i>
+                                        <span>完整问答内容访问</span>
+                                    </li>
+                                    <li class="d-flex align-items-center mb-3">
+                                        <i class="material-icons text-success me-2" style="font-size: 1.2rem;">check_circle</i>
+                                        <span>所有资源完整下载</span>
+                                    </li>
+                                    <li class="d-flex align-items-center mb-3">
+                                        <i class="material-icons text-success me-2" style="font-size: 1.2rem;">check_circle</i>
+                                        <span>月度专家咨询（4次）</span>
+                                    </li>
+                                </ul>
+                                <button class="btn btn-outline-primary rounded-pill mt-auto">选择此方案</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 回到顶部按钮 -->
+    <button class="btn btn-primary rounded-circle position-fixed bottom-0 end-0 m-4 shadow" id="backToTop" style="width: 50px; height: 50px; display: none; z-index: 1000;">
+        <i class="material-icons">arrow_upward</i>
+    </button>
+
+    <!-- Bootstrap JS, Material Design JS和其他必要的JS库 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/material-components-web@14.0.0/dist/material-components-web.min.js"></script>
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <!-- Particles.js -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <!-- Three.js for 3D Molecule Viewer -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/controls/OrbitControls.js"></script>
+    <!-- CountUp JS -->
+    <script src="https://cdn.jsdelivr.net/npm/countup.js@2.6.0/dist/countUp.umd.min.js"></script>
+    <!-- 引入自定义JS -->
+    <script src="js/quick-interaction.js"></script>
+
+    <script>
+        // 初始化AOS动画库
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            mirror: false
+        });
+        
+        // 初始化Material Design组件
+        window.addEventListener('load', function() {
+            // 初始化Material组件
+            const buttons = document.querySelectorAll('.mdc-button');
+            buttons.forEach((button) => {
+                mdc.ripple.MDCRipple.attachTo(button);
+            });
+        });
+
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 关闭加载动画
+            setTimeout(function() {
+                const loadingOverlay = document.getElementById('loadingOverlay');
+                if (loadingOverlay) {
+                    loadingOverlay.style.opacity = '0';
+                    setTimeout(function() {
+                        loadingOverlay.style.display = 'none';
+                    }, 500);
+                }
+            }, 800);
+
+            // 设置当前页面导航高亮
+            setActiveNavItem();
+
+            // 初始化粒子背景
+            if (document.getElementById('particles-js')) {
+                particlesJS('particles-js', {
+                    "particles": {
+                        "number": {"value": 100, "density": {"enable": true, "value_area": 800}},
+                        "color": {"value": "#ffffff"},
+                        "shape": {"type": "circle"},
+                        "opacity": {"value": 0.5, "random": false},
+                        "size": {"value": 3, "random": true},
+                        "line_linked": {"enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1},
+                        "move": {"enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false}
+                    },
+                    "interactivity": {
+                        "detect_on": "canvas",
+                        "events": {
+                            "onhover": {"enable": true, "mode": "grab"},
+                            "onclick": {"enable": true, "mode": "push"},
+                            "resize": true
+                        }
+                    },
+                    "retina_detect": true
+                });
+            }
+
+            // 初始化3D分子结构查看器
+            initMoleculeViewer();
+
+            // 初始化计数器
+            const counters = document.querySelectorAll('.counter');
+            if (counters.length > 0) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const value = parseInt(entry.target.textContent);
+                            const countUp = new CountUp(entry.target, 0, value, 0, 2.5);
+                            countUp.start();
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.5 });
+                
+                counters.forEach(counter => observer.observe(counter));
+            }
+            
+            // 回到顶部按钮
+            const backToTopBtn = document.getElementById('backToTop');
+            if (backToTopBtn) {
+                window.addEventListener('scroll', function() {
+                    if (window.pageYOffset > 300) {
+                        backToTopBtn.style.display = 'flex';
+                    } else {
+                        backToTopBtn.style.display = 'none';
+                    }
+                });
+                
+                backToTopBtn.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        });
+
+        // 设置当前页面导航高亮
+        function setActiveNavItem() {
+            // 获取当前页面URL
+            const currentPage = window.location.pathname.split('/').pop();
+            
+            // 移除所有导航链接的active类
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // 设置当前页面对应的导航链接为active
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // 初始化3D分子结构查看器
+        function initMoleculeViewer() {
+            const container = document.getElementById('molecule-viewer');
+            if (!container) return;
+            
+            // 创建场景、相机和渲染器
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x1a237e);
+            
+            const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.z = 5;
+            
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(renderer.domElement);
+            
+            // 添加灯光
+            scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+            const pointLight = new THREE.PointLight(0xffffff, 1);
+            pointLight.position.set(10, 10, 10);
+            scene.add(pointLight);
+            
+            // 创建控制器
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            
+            // 创建甲烷分子(CH4)
+            const carbon = new THREE.Mesh(
+                new THREE.SphereGeometry(0.5, 32, 32),
+                new THREE.MeshPhongMaterial({ color: 0x333333 })
+            );
+            scene.add(carbon);
+            
+            const hydrogens = [];
+            [
+                new THREE.Vector3(0.7, 0.7, 0.7),
+                new THREE.Vector3(-0.7, -0.7, 0.7),
+                new THREE.Vector3(0.7, -0.7, -0.7),
+                new THREE.Vector3(-0.7, 0.7, -0.7)
+            ].forEach(position => {
+                const hydrogen = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.2, 32, 32),
+                    new THREE.MeshPhongMaterial({ color: 0xffffff })
+                );
+                hydrogen.position.copy(position);
+                scene.add(hydrogen);
+                hydrogens.push(hydrogen);
+                
+                // 添加碳-氢键
+                const bond = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.05, 0.05, position.length(), 8, 1),
+                    new THREE.MeshPhongMaterial({ color: 0x999999 })
+                );
+                
+                // 放置并旋转键
+                const midpoint = new THREE.Vector3().addVectors(new THREE.Vector3(0, 0, 0), position).multiplyScalar(0.5);
+                bond.position.copy(midpoint);
+                bond.lookAt(position);
+                bond.rotateX(Math.PI / 2);
+                
+                scene.add(bond);
+            });
+            
+            // 移除加载状态
+            const loadingState = container.querySelector('.text-center');
+            if (loadingState) loadingState.style.display = 'none';
+            
+            // 添加自动旋转
+            let autoRotate = true;
+            
+            // 动画循环
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                if (autoRotate) {
+                    carbon.rotation.y += 0.005;
+                    hydrogens.forEach(h => {
+                        h.position.applyAxisAngle(new THREE.Vector3(0, 1, 0), 0.005);
+                    });
+                }
+                
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            animate();
+            
+            // 响应窗口调整
+            window.addEventListener('resize', () => {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+            
+            // 绑定互动按钮事件
+            document.getElementById('rotate-molecule')?.addEventListener('click', () => {
+                autoRotate = !autoRotate;
+            });
+            
+            document.getElementById('zoom-in-molecule')?.addEventListener('click', () => {
+                camera.position.z = Math.max(camera.position.z - 0.5, 2);
+            });
+            
+            document.getElementById('zoom-out-molecule')?.addEventListener('click', () => {
+                camera.position.z = Math.min(camera.position.z + 0.5, 10);
+            });
+            
+            // 添加鼠标悬停暂停自动旋转功能
+            container.addEventListener('mouseenter', () => {
+                autoRotate = false;
+            });
+            
+            container.addEventListener('mouseleave', () => {
+                autoRotate = true;
+            });
+        }
+    </script>
+</body>
+</html> 

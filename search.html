@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能搜索 - Materials Studio 知识解答平台</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #004494;
+            --accent-color: #00a0e9;
+            --light-bg: #f8f9fa;
+            --dark-bg: #343a40;
+            --border-radius: 8px;
+            --box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            --transition-speed: 0.3s;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            color: #333;
+            background-color: var(--light-bg);
+        }
+        
+        .navbar {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .search-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .search-box {
+            box-shadow: var(--box-shadow);
+            border-radius: var(--border-radius);
+            transition: all var(--transition-speed);
+        }
+        
+        .search-box:focus-within {
+            box-shadow: 0 5px 20px rgba(0,86,179,0.2);
+            transform: translateY(-2px);
+        }
+        
+        .search-input {
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 20px 25px;
+            font-size: 1.1rem;
+        }
+        
+        .search-input:focus {
+            box-shadow: none;
+        }
+        
+        .search-button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+        }
+        
+        .search-button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .advanced-search-toggle {
+            cursor: pointer;
+            color: var(--primary-color);
+            transition: all var(--transition-speed);
+        }
+        
+        .advanced-search-toggle:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+        
+        .card {
+            border: none;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: all var(--transition-speed);
+            margin-bottom: 20px;
+        }
+        
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .search-result-meta {
+            color: #6c757d;
+            font-size: 0.85rem;
+        }
+        
+        .search-result-description {
+            margin-top: 8px;
+            color: #495057;
+        }
+        
+        .search-result-match {
+            background-color: rgba(255, 243, 205, 0.5);
+            padding: 0 3px;
+            border-radius: 3px;
+        }
+        
+        .search-filter-button {
+            background-color: white;
+            border: 1px solid #dee2e6;
+            border-radius: 20px;
+            padding: 6px 15px;
+            margin-right: 10px;
+            transition: all var(--transition-speed);
+            cursor: pointer;
+        }
+        
+        .search-filter-button:hover, .search-filter-button.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .term-chip {
+            display: inline-block;
+            background-color: rgba(0,86,179,0.1);
+            color: var(--primary-color);
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            border: 1px solid rgba(0,86,179,0.2);
+            transition: all var(--transition-speed);
+        }
+        
+        .term-chip:hover {
+            background-color: rgba(0,86,179,0.2);
+        }
+        
+        .term-definition {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dashed var(--primary-color);
+            cursor: help;
+        }
+        
+        .term-tooltip {
+            visibility: hidden;
+            width: 300px;
+            background-color: #fff;
+            color: #333;
+            text-align: left;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -150px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.2);
+            border: 1px solid rgba(0,0,0,0.1);
+            font-size: 0.9rem;
+        }
+        
+        .term-definition:hover .term-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* 快速搜索按钮样式 */
+        .quick-search-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            cursor: pointer;
+        }
+        
+        .quick-search-btn:hover {
+            background-color: var(--secondary-color);
+            transform: scale(1.1);
+        }
+        
+        .quick-search-btn i {
+            font-size: 1.5rem;
+        }
+        
+        /* 搜索历史样式 */
+        .search-history {
+            margin-top: 20px;
+        }
+        
+        .search-history-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 15px;
+            background: white;
+            border-radius: var(--border-radius);
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: all var(--transition-speed);
+            cursor: pointer;
+        }
+        
+        .search-history-item:hover {
+            background-color: #f8f9fa;
+            transform: translateX(5px);
+        }
+        
+        .search-history-item .history-time {
+            color: #6c757d;
+            font-size: 0.8rem;
+            margin-left: auto;
+        }
+        
+        .search-history-item .history-text {
+            margin-left: 10px;
+            font-weight: 500;
+        }
+        
+        /* 搜索建议下拉样式 */
+        .search-suggestions {
+            position: absolute;
+            width: 100%;
+            background: white;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            z-index: 10;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .search-suggestion-item {
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .search-suggestion-item:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .search-suggestion-item.recent {
+            border-left: 3px solid var(--accent-color);
+        }
+        
+        .search-suggestion-item.popular {
+            border-left: 3px solid #28a745;
+        }
+        
+        /* 语音搜索按钮 */
+        .voice-search-btn {
+            position: absolute;
+            right: 65px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6c757d;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .voice-search-btn:hover {
+            color: var(--primary-color);
+        }
+        
+        /* 模态框样式 */
+        .custom-modal .modal-header {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+        
+        /* 导航栏当前页面指示样式 */
+        .navbar-dark .navbar-nav .nav-link.active {
+            color: rgba(255,255,255,1);
+            background-color: rgba(255,255,255,0.2);
+            font-weight: 600;
+            position: relative;
+        }
+        
+        .navbar-dark .navbar-nav .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 3px;
+            background-color: var(--member-color);
+            border-radius: 3px;
+        }
+        
+        .navbar-dark .navbar-nav .nav-link {
+            color: rgba(255,255,255,.8);
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        /* 语音搜索状态指示器 */
+        .voice-search-indicator {
+            position: absolute;
+            right: 65px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(0, 86, 179, 0.1);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: translateY(-50%) scale(0.95); opacity: 0.7; }
+            50% { transform: translateY(-50%) scale(1.05); opacity: 1; }
+            100% { transform: translateY(-50%) scale(0.95); opacity: 0.7; }
+        }
+        
+        /* 实时搜索结果样式 */
+        .live-search-results {
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            z-index: 1000;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            padding: 10px;
+        }
+        
+        .live-result-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .live-result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .live-result-item:hover {
+            background-color: rgba(0,86,179,0.05);
+        }
+        
+        .live-result-item .title {
+            font-weight: 500;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .live-result-item .snippet {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        /* 搜索过滤器增强 */
+        .filter-reset {
+            color: var(--primary-color);
+            cursor: pointer;
+            font-size: 0.8rem;
+            text-decoration: underline;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="https://via.placeholder.com/150x40?text=MS+知识平台" alt="Materials Studio 知识解答平台">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html"><i class="fas fa-home"></i> 首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="qa.html"><i class="fas fa-question-circle"></i> 问答中心</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="resources.html"><i class="fas fa-file-alt"></i> 资源库</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="community.html"><i class="fas fa-users"></i> 社区</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="membership.html"><i class="fas fa-crown"></i> 会员</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a href="#" class="btn btn-outline-light me-2"><i class="fas fa-user-circle"></i> 登录</a>
+                    <a href="#" class="btn btn-light"><i class="fas fa-sign-in-alt"></i> 注册</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 搜索页主体 -->
+    <div class="container mt-4 mb-5">
+        <div class="search-container">
+            <!-- 搜索框 -->
+            <div class="mb-4">
+                <div class="position-relative search-box">
+                    <input type="text" class="form-control search-input" id="mainSearchInput" placeholder="输入关键词、问题或术语..." autofocus>
+                    <div class="voice-search-indicator" id="voiceSearchIndicator">
+                        <i class="fas fa-microphone-alt text-primary"></i>
+                    </div>
+                    <button class="voice-search-btn" id="voiceSearchBtn" title="语音搜索">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <button class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+                    
+                    <!-- 搜索建议下拉 -->
+                    <div class="search-suggestions" id="searchSuggestions">
+                        <div class="search-suggestion-item recent">
+                            <i class="fas fa-history me-2"></i> Materials Studio 优化收敛问题
+                        </div>
+                        <div class="search-suggestion-item popular">
+                            <i class="fas fa-fire-alt me-2"></i> CASTEP 计算参数设置
+                        </div>
+                        <div class="search-suggestion-item">
+                            <i class="fas fa-search me-2"></i> 分子动力学模拟温度控制
+                        </div>
+                        <div class="search-suggestion-item">
+                            <i class="fas fa-search me-2"></i> 过渡态搜索方法
+                        </div>
+                    </div>
+                    
+                    <!-- 实时搜索结果 -->
+                    <div class="live-search-results" id="liveSearchResults">
+                        <!-- 结果会通过JavaScript动态加载 -->
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                    <div>
+                <span class="advanced-search-toggle" data-bs-toggle="collapse" data-bs-target="#advancedSearch">
+                            <i class="fas fa-sliders-h me-1"></i> 高级搜索
+                </span>
+                    </div>
+                <div>
+                        <span class="text-muted small" id="searchStats">找到约 152 条结果 (0.35 秒)</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 高级搜索选项 -->
+            <div class="collapse mb-4" id="advancedSearch">
+                <div class="card card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">内容类型</label>
+                            <div class="d-flex flex-wrap">
+                                <div class="form-check me-3">
+                                    <input class="form-check-input" type="checkbox" id="typeQuestions" checked>
+                                    <label class="form-check-label" for="typeQuestions">问答</label>
+                                </div>
+                                <div class="form-check me-3">
+                                    <input class="form-check-input" type="checkbox" id="typeTerms" checked>
+                                    <label class="form-check-label" for="typeTerms">术语</label>
+                                </div>
+                                <div class="form-check me-3">
+                                    <input class="form-check-input" type="checkbox" id="typeTutorials" checked>
+                                    <label class="form-check-label" for="typeTutorials">教程</label>
+                        </div>
+                                <div class="form-check me-3">
+                                    <input class="form-check-input" type="checkbox" id="typeDocuments" checked>
+                                    <label class="form-check-label" for="typeDocuments">文档</label>
+                        </div>
+                    </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">时间范围</label>
+                            <select class="form-select">
+                                <option value="any" selected>不限</option>
+                                <option value="day">24小时内</option>
+                                <option value="week">一周内</option>
+                                <option value="month">一个月内</option>
+                                <option value="year">一年内</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">相关模块</label>
+                            <select class="form-select">
+                                <option value="all" selected>全部</option>
+                                <option value="castep">CASTEP</option>
+                                <option value="dmol3">DMol3</option>
+                                <option value="forcite">Forcite</option>
+                                <option value="gulp">GULP</option>
+                                <option value="mesodyn">Mesodyn</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">排序方式</label>
+                            <select class="form-select">
+                                <option value="relevance" selected>相关性</option>
+                                <option value="date_desc">最新发布</option>
+                                <option value="date_asc">最早发布</option>
+                                <option value="views">浏览量</option>
+                                <option value="answers">回答数</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-primary">应用筛选</button>
+                        <button class="btn btn-outline-secondary ms-2">重置</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 搜索历史部分 -->
+            <div class="search-history collapse" id="searchHistory">
+                <h5 class="mb-3">搜索历史</h5>
+                <div class="search-history-item">
+                    <i class="fas fa-history text-muted"></i>
+                    <span class="history-text">CASTEP 几何优化收敛问题</span>
+                    <span class="history-time">今天 14:30</span>
+                </div>
+                <div class="search-history-item">
+                    <i class="fas fa-history text-muted"></i>
+                    <span class="history-text">DMol3 自旋极化计算</span>
+                    <span class="history-time">昨天 09:15</span>
+                </div>
+                <div class="search-history-item">
+                    <i class="fas fa-history text-muted"></i>
+                    <span class="history-text">Materials Studio 许可证激活</span>
+                    <span class="history-time">2023-10-15</span>
+                </div>
+                <div class="text-center mt-3 mb-4">
+                    <button class="btn btn-sm btn-outline-secondary">清除历史记录</button>
+                </div>
+            </div>
+            
+            <!-- 筛选标签 -->
+            <div class="d-flex flex-wrap mb-4">
+                <button class="search-filter-button active">全部</button>
+                <button class="search-filter-button">问题 (56)</button>
+                <button class="search-filter-button">术语 (32)</button>
+                <button class="search-filter-button">教程 (41)</button>
+                <button class="search-filter-button">文档 (23)</button>
+                <span class="filter-reset ms-3 align-self-center" id="resetAllFilters"><i class="fas fa-undo-alt me-1"></i>重置所有筛选</span>
+            </div>
+            
+            <!-- 搜索结果列表 -->
+            <div class="search-results">
+                <!-- 问答结果 -->
+                <div class="card search-result" data-type="qa">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <span class="badge bg-primary mb-2">问答</span>
+                            <span class="search-result-meta">
+                                <i class="fas fa-eye me-1"></i> 528 浏览
+                                <i class="fas fa-comment-alt ms-2 me-1"></i> 12 回答
+                            </span>
+                        </div>
+                        <h5 class="card-title">
+                            <a href="qa.html#q10253" class="text-decoration-none">如何在<span class="search-result-match">CASTEP</span>中设置<span class="search-result-match">过渡态</span>计算？</a>
+                        </h5>
+                        <p class="search-result-description">
+                            我在使用<span class="term-definition">CASTEP<span class="term-tooltip">CASTEP是一款基于密度泛函理论(DFT)的第一性原理量子力学程序，用于计算材料性质。它使用平面波基组和赝势方法求解Kohn-Sham方程，广泛应用于固体、表面、分子等系统的模拟。</span></span>模块尝试计算分子在催化剂表面上的<span class="term-definition">过渡态<span class="term-tooltip">过渡态是化学反应路径上的高能中间状态，代表反应物转化为产物过程中的能量最高点。在计算化学中，过渡态的确定对理解反应机理和反应速率至关重要。</span></span>时遇到收敛问题...
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div>
+                                <span class="badge bg-light text-dark me-1">过渡态</span>
+                                <span class="badge bg-light text-dark me-1">CASTEP</span>
+                                <span class="badge bg-light text-dark">LST/QST</span>
+                            </div>
+                            <small class="text-muted">2023-10-15 · 张明（专家用户）</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 资源结果 -->
+                <div class="card search-result" data-type="resource">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <span class="badge bg-success mb-2">资源</span>
+                            <span class="search-result-meta">
+                                <i class="fas fa-download me-1"></i> 156 下载
+                                <i class="fas fa-star ms-2 me-1"></i> 4.8 评分
+                            </span>
+                        </div>
+                        <h5 class="card-title">
+                            <a href="resources.html#r1045" class="text-decoration-none"><span class="search-result-match">CASTEP</span>模块<span class="search-result-match">过渡态</span>计算参数模板</a>
+                        </h5>
+                        <p class="search-result-description">
+                            这是一套用于<span class="term-definition">CASTEP<span class="term-tooltip">CASTEP是一款基于密度泛函理论(DFT)的第一性原理量子力学程序，用于计算材料性质。它使用平面波基组和赝势方法求解Kohn-Sham方程，广泛应用于固体、表面、分子等系统的模拟。</span></span>模块进行过渡态计算的优化参数模板，包含了LST/QST方法的详细参数设置和示例...
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div>
+                                <i class="fas fa-file-archive text-warning me-1"></i> 
+                                <span class="text-muted">castep_ts_template.zip (2.3 MB)</span>
+                            </div>
+                            <small class="text-muted">2023-09-08 · 王教授（认证专家）</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 教程结果 -->
+                <div class="card search-result" data-type="tutorial">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <span class="badge bg-info text-dark mb-2">教程</span>
+                            <span class="search-result-meta">
+                                <i class="fas fa-eye me-1"></i> 845 浏览
+                                <i class="fas fa-thumbs-up ms-2 me-1"></i> 98% 有用
+                            </span>
+                        </div>
+                        <h5 class="card-title">
+                            <a href="resources.html#t328" class="text-decoration-none"><span class="search-result-match">CASTEP</span>中的<span class="search-result-match">过渡态</span>搜索：完整指南</a>
+                        </h5>
+                        <p class="search-result-description">
+                            本教程详细介绍了如何在Materials Studio的CASTEP模块中使用<span class="term-definition">LST/QST<span class="term-tooltip">LST (Linear Synchronous Transit) 和 QST (Quadratic Synchronous Transit) 是计算化学中用于寻找过渡态的方法。LST沿反应物和产物之间的直线路径搜索，而QST在LST基础上使用二次内插获得更精确的过渡态结构。</span></span>方法和<span class="term-definition">NEB<span class="term-tooltip">NEB (Nudged Elastic Band) 是一种计算化学方法，用于寻找化学反应的最小能量路径。该方法在反应物和产物之间生成一系列"图像"，并通过弹性带力和力场投影优化这些图像，以找到能量鞍点和过渡态。</span></span>方法进行过渡态搜索...
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div>
+                                <span class="badge bg-light text-dark me-1">过渡态</span>
+                                <span class="badge bg-light text-dark me-1">CASTEP</span>
+                                <span class="badge bg-light text-dark me-1">教程</span>
+                                <span class="badge bg-light text-dark">高级</span>
+                            </div>
+                            <small class="text-muted">2023-08-20 · 李华（材料科学专家）</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 讨论结果 -->
+                <div class="card search-result" data-type="discussion">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <span class="badge bg-warning text-dark mb-2">讨论</span>
+                            <span class="search-result-meta">
+                                <i class="fas fa-users me-1"></i> 23 参与
+                                <i class="fas fa-comments ms-2 me-1"></i> 35 回复
+                            </span>
+                        </div>
+                        <h5 class="card-title">
+                            <a href="community.html#d567" class="text-decoration-none"><span class="search-result-match">CASTEP</span>和DMol3在<span class="search-result-match">过渡态</span>计算中的比较与选择</a>
+                        </h5>
+                        <p class="search-result-description">
+                            这个讨论主题比较了Materials Studio中CASTEP和<span class="term-definition">DMol3<span class="term-tooltip">DMol3是Materials Studio中的一个量子力学模块，基于密度泛函理论(DFT)，用于模拟分子和周期性系统的电子结构和性质。它使用数值原子轨道基组，适合计算分子、表面和固体的结构、能量和电子性质。</span></span>两个模块在过渡态计算中的优缺点，以及适用场景...
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div>
+                                <span class="badge bg-light text-dark me-1">过渡态</span>
+                                <span class="badge bg-light text-dark me-1">CASTEP</span>
+                                <span class="badge bg-light text-dark">DMol3</span>
+                            </div>
+                            <small class="text-muted">2023-11-02 · 活跃讨论</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 分页导航 -->
+                <nav aria-label="搜索结果分页" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">上一页</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">下一页</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 快速搜索按钮 -->
+    <div class="quick-search-btn" data-bs-toggle="modal" data-bs-target="#quickSearchModal">
+        <i class="fas fa-search"></i>
+    </div>
+
+    <!-- 快速搜索模态框 -->
+    <div class="modal fade custom-modal" id="quickSearchModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-search me-2"></i>快速搜索</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <input type="text" class="form-control form-control-lg" id="quickSearchInput" placeholder="输入搜索关键词...">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">搜索范围</label>
+                        <div class="d-flex flex-wrap">
+                            <div class="form-check me-3">
+                                <input class="form-check-input" type="radio" name="searchScope" id="scopeAll" checked>
+                                <label class="form-check-label" for="scopeAll">全部</label>
+                            </div>
+                            <div class="form-check me-3">
+                                <input class="form-check-input" type="radio" name="searchScope" id="scopeQuestions">
+                                <label class="form-check-label" for="scopeQuestions">问答</label>
+                            </div>
+                            <div class="form-check me-3">
+                                <input class="form-check-input" type="radio" name="searchScope" id="scopeTerms">
+                                <label class="form-check-label" for="scopeTerms">术语</label>
+                            </div>
+                            <div class="form-check me-3">
+                                <input class="form-check-input" type="radio" name="searchScope" id="scopeTutorials">
+                                <label class="form-check-label" for="scopeTutorials">教程</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">高级选项</label>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="searchFullText">
+                            <label class="form-check-label" for="searchFullText">全文搜索</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="searchExactMatch">
+                            <label class="form-check-label" for="searchExactMatch">精确匹配</label>
+                        </div>
+                    </div>
+                    <h6 class="mb-2">热门搜索</h6>
+                    <div class="d-flex flex-wrap mb-3">
+                        <a href="#" class="term-chip"><i class="fas fa-fire-alt me-1"></i> CASTEP</a>
+                        <a href="#" class="term-chip"><i class="fas fa-fire-alt me-1"></i> 几何优化</a>
+                        <a href="#" class="term-chip"><i class="fas fa-fire-alt me-1"></i> 能带结构</a>
+                        <a href="#" class="term-chip"><i class="fas fa-fire-alt me-1"></i> 过渡态</a>
+                        <a href="#" class="term-chip"><i class="fas fa-fire-alt me-1"></i> 分子动力学</a>
+                    </div>
+                    <hr>
+                    <div class="mb-2">
+                        <a href="#" data-bs-toggle="collapse" data-bs-target="#searchHistory" data-bs-dismiss="modal">
+                            <i class="fas fa-history me-1"></i> 查看完整搜索历史
+                        </a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="doQuickSearch">搜索</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- 快速交互脚本 -->
+    <script src="js/quick-interaction.js"></script>
+    
+    <!-- 添加在JavaScript部分 -->
+    <script>
+        // 添加到现有的页面加载事件中或创建新的DOMContentLoaded事件
+        document.addEventListener('DOMContentLoaded', function() {
+            // 设置当前页面导航高亮
+            setActiveNavItem();
+            
+            // 实时搜索功能
+            const searchInput = document.getElementById('mainSearchInput');
+            const liveSearchResults = document.getElementById('liveSearchResults');
+            
+            if (searchInput) {
+                let searchTimeout;
+                
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(searchTimeout);
+                    
+                    const query = this.value.trim();
+                    if (query.length >= 2) {
+                        searchTimeout = setTimeout(function() {
+                            // 这里应该是调用API获取结果
+                            // 演示用，显示模拟结果
+                            showLiveSearchResults(query);
+                        }, 300);
+                    } else {
+                        liveSearchResults.style.display = 'none';
+                    }
+                });
+                
+                // 点击页面其他位置时隐藏实时搜索结果
+                document.addEventListener('click', function(e) {
+                    if (!searchInput.contains(e.target) && !liveSearchResults.contains(e.target)) {
+                        liveSearchResults.style.display = 'none';
+                    }
+                });
+            }
+            
+            // 重置过滤器
+            const resetAllFilters = document.getElementById('resetAllFilters');
+            if (resetAllFilters) {
+                resetAllFilters.addEventListener('click', function() {
+                    // 重置所有过滤按钮
+                    const filterButtons = document.querySelectorAll('.search-filter-button');
+                    filterButtons.forEach(button => {
+                        button.classList.remove('active');
+                    });
+                    
+                    // 选中"全部"按钮
+                    filterButtons[0].classList.add('active');
+                    
+                    // 重置高级搜索选项
+                    document.getElementById('advancedSearch').classList.remove('show');
+                    
+                    // 重置检查框
+                    document.querySelectorAll('#advancedSearch input[type="checkbox"]').forEach(checkbox => {
+                        checkbox.checked = true;
+                    });
+                    
+                    // 重置下拉菜单
+                    document.querySelectorAll('#advancedSearch select').forEach(select => {
+                        select.selectedIndex = 0;
+                    });
+                });
+            }
+            
+            // 语音搜索增强
+            const voiceSearchBtn = document.getElementById('voiceSearchBtn');
+            const voiceSearchIndicator = document.getElementById('voiceSearchIndicator');
+            
+            if (voiceSearchBtn && voiceSearchIndicator) {
+                voiceSearchBtn.addEventListener('click', function() {
+                    if (window.SpeechRecognition || window.webkitSpeechRecognition) {
+                        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                        const recognition = new SpeechRecognition();
+                        
+                        recognition.lang = 'zh-CN';
+                        recognition.interimResults = false;
+                        recognition.maxAlternatives = 1;
+                        
+                        // 显示语音搜索状态
+                        voiceSearchIndicator.style.display = 'flex';
+                        voiceSearchBtn.style.display = 'none';
+                        
+                        recognition.onresult = function(event) {
+                            const transcript = event.results[0][0].transcript;
+                            searchInput.value = transcript;
+                            
+                            // 触发搜索
+                            performSearch(transcript);
+                            
+                            // 隐藏语音搜索状态
+                            voiceSearchIndicator.style.display = 'none';
+                            voiceSearchBtn.style.display = 'block';
+                        };
+                        
+                        recognition.onerror = function(event) {
+                            console.error('语音识别错误:', event.error);
+                            
+                            // 显示错误通知
+                            if (window.quickInteraction) {
+                                window.quickInteraction.showNotification('语音识别失败: ' + event.error, 'error');
+                            }
+                            
+                            // 隐藏语音搜索状态
+                            voiceSearchIndicator.style.display = 'none';
+                            voiceSearchBtn.style.display = 'block';
+                        };
+                        
+                        recognition.onend = function() {
+                            // 隐藏语音搜索状态
+                            voiceSearchIndicator.style.display = 'none';
+                            voiceSearchBtn.style.display = 'block';
+                        };
+                        
+                        recognition.start();
+                    } else {
+                        alert('您的浏览器不支持语音识别功能');
+                    }
+                });
+            }
+            
+            // 快速搜索功能
+            const quickSearchBtn = document.querySelector('.quick-search-btn');
+            const quickSearchInput = document.getElementById('quickSearchInput');
+            const doQuickSearch = document.getElementById('doQuickSearch');
+            
+            if (doQuickSearch && quickSearchInput) {
+                doQuickSearch.addEventListener('click', function() {
+                    const query = quickSearchInput.value.trim();
+                    if (query) {
+                        // 获取搜索范围
+                        const scope = document.querySelector('input[name="searchScope"]:checked').id.replace('scope', '').toLowerCase();
+                        
+                        // 获取搜索选项
+                        const fullText = document.getElementById('searchFullText').checked;
+                        const exactMatch = document.getElementById('searchExactMatch').checked;
+                        
+                        // 构建搜索参数
+                        let params = `q=${encodeURIComponent(query)}`;
+                        if (scope !== 'all') {
+                            params += `&scope=${scope}`;
+                        }
+                        if (fullText) {
+                            params += '&full=1';
+                        }
+                        if (exactMatch) {
+                            params += '&exact=1';
+                        }
+                        
+                        // 关闭模态框
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('quickSearchModal'));
+                        modal.hide();
+                        
+                        // 执行搜索
+                        window.location.href = `search.html?${params}`;
+                    }
+                });
+                
+                // 回车键触发搜索
+                quickSearchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        doQuickSearch.click();
+                    }
+                });
+            }
+        });
+        
+        // 显示实时搜索结果
+        function showLiveSearchResults(query) {
+            const liveSearchResults = document.getElementById('liveSearchResults');
+            if (!liveSearchResults) return;
+            
+            // 在实际应用中，这里应该是通过AJAX请求获取结果
+            // 这里使用模拟数据
+            const results = [
+                {
+                    title: `关于 ${query} 的最新问题`,
+                    type: 'question',
+                    snippet: `如何解决 ${query} 相关的模拟收敛性问题？这个问题最近很多用户都在讨论...`
+                },
+                {
+                    title: `${query} 术语解释`,
+                    type: 'term',
+                    snippet: `${query} 是指在材料科学中常用的一种计算方法，主要应用于...`
+                },
+                {
+                    title: `${query} 相关教程`,
+                    type: 'tutorial',
+                    snippet: `这是一个关于如何在Materials Studio中使用 ${query} 的详细教程...`
+                }
+            ];
+            
+            // 清空容器
+            liveSearchResults.innerHTML = '';
+            
+            // 添加结果
+            results.forEach(result => {
+                const item = document.createElement('div');
+                item.className = 'live-result-item';
+                item.innerHTML = `
+                    <div class="title">
+                        <i class="fas fa-${result.type === 'question' ? 'question-circle' : (result.type === 'term' ? 'book' : 'file-alt')} me-2"></i>
+                        ${result.title}
+                    </div>
+                    <div class="snippet">${result.snippet}</div>
+                `;
+                
+                // 点击结果项执行搜索
+                item.addEventListener('click', () => {
+                    const searchInput = document.getElementById('mainSearchInput');
+                    if (searchInput) {
+                        searchInput.value = query;
+                        performSearch(query);
+                    }
+                    liveSearchResults.style.display = 'none';
+                });
+                
+                liveSearchResults.appendChild(item);
+            });
+            
+            // 显示结果容器
+            liveSearchResults.style.display = 'block';
+        }
+        
+        // 执行搜索
+        function performSearch(query) {
+            // 调用quick-interaction.js中的搜索方法
+            if (window.quickInteraction) {
+                window.quickInteraction.performSearch(query);
+            } else {
+                // 回退方案
+                window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+            }
+        }
+        
+        // 设置当前页面导航高亮
+        function setActiveNavItem() {
+            // 获取当前页面URL
+            const currentPage = window.location.pathname.split('/').pop();
+            
+            // 移除所有导航链接的active类
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // 设置当前页面对应的导航链接为active
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+                    link.classList.add('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html> 
